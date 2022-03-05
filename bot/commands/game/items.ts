@@ -3,6 +3,9 @@ import { SlashCommandBuilder } from "@discordjs/builders"
 import pages from "../../ts/pages.js"
 import items from "../../ts/items.js"
 import type { Item } from "../../ts/items.js"
+import { MessageEmbed } from "discord.js"
+
+const capital = (string: string) => string.charAt(0).toUpperCase() + string.slice(1)
 
 export default <Command>{
     dataBuilder: new SlashCommandBuilder()
@@ -14,19 +17,20 @@ export default <Command>{
             const chunkIndex = Math.floor(i / 7)
 
             if (!res[chunkIndex]) {
-                res[chunkIndex] = {
-                    description: `Items page ${i + 1}`,
-                    content: []
-                }
+                res[chunkIndex] = []
             }
 
-            res[chunkIndex].content.push(
-                `\`${itemKey}\` | ${item.displayName} \`${"⭐".repeat(item.rarity + 1)}\`${item.sellable ? ` | **$${item.value}**/**$${item.sellValue}**` : ""}`
+            res[chunkIndex].push(
+                `${item.icon} **${capital(itemKey)}** - \`⭐x${item.rarity + 1}\` - [$${item.value}](http://example.com/)${item.sellable ? `/[$${item.sellValue}](http://example.com/) (sell price)` : " (not sellable)"}
+${item.description}\n`
             )
 
             return res
         }, [])
-        console.log(listItems)
-        pages(listItems, interaction)
+
+        pages(listItems, interaction, new MessageEmbed()
+            .setColor("BLURPLE")
+            .setFooter({ text: "Run \"/buy <name>\" to purchase an item!" })
+        )
     }
 }

@@ -1,7 +1,7 @@
 import { MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu } from "discord.js"
 import type { CommandInteraction } from "discord.js"
 
-export default async (pages: { description: string, content: string | string[] }[], interaction: CommandInteraction, edit = false) => {
+export default async (pages: (string | string[])[], interaction: CommandInteraction, baseEmbed?: MessageEmbed, edit = false) => {
     return new Promise<void>((resolve) => {
         const buttons = [
             new MessageActionRow()
@@ -10,10 +10,10 @@ export default async (pages: { description: string, content: string | string[] }
                         .setCustomId("setPage")
                         .setPlaceholder("Select a page")
                         .addOptions(
-                            pages.map((page, i) => {
+                            pages.map((_, i) => {
                                 return {
                                     label: `Page ${i + 1}`,
-                                    description: page.description,
+                                    description: `Go to page ${i + 1}`,
                                     value: `page${i}`
                                 }
                             })
@@ -41,9 +41,23 @@ export default async (pages: { description: string, content: string | string[] }
         ]
 
         const getEmbed = () => {
+            const content = pages[selectedPage]
+
+            if (baseEmbed) {
+                return baseEmbed
+                    .setDescription(
+                        (typeof content === "string")
+                            ? content
+                            : content.join("\n")
+                    )
+                    .setTitle(`Page ${selectedPage + 1}/${pages.length}`)
+            }
+
             return new MessageEmbed()
                 .setDescription(
-                    (typeof pages[selectedPage].content === "string") ? <string>pages[selectedPage].content : (<string[]>pages[selectedPage].content).join("\n")
+                    (typeof content === "string")
+                        ? content
+                        : content.join("\n")
                 )
                 .setColor("PURPLE")
                 .setTitle(`Page ${selectedPage + 1}/${pages.length}`)

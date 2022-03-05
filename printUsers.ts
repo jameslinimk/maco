@@ -1,8 +1,10 @@
 import chalk from "chalk"
 import db from "quick.db"
 
-console.log(chalk.green(process.argv.slice(2).join(" ")))
-console.log(eval(process.argv.slice(2).join(" ")), "\n")
+if (process.argv.slice(2).join(" ").length !== 0) {
+    console.log(chalk.green(process.argv.slice(2).join(" ")))
+    console.log(eval(process.argv.slice(2).join(" ")), "\n")
+}
 
 const tableUsers = {}
 const users = db.get("users")
