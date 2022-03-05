@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "watch": true,
+        "lib": [
+            "ESNext",
+        ],
+        "module": "ESNext",
+        "moduleResolution": "nodenext",
+        "sourceMap": true,
+    }
+}

@@ -1,0 +1,9 @@
+json.sqlite
+package-lock.json
+
+config.ts
+
+/node_modules/
+/.history/
+*.js
+*.js.map
