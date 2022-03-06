@@ -13,6 +13,7 @@ enum Rarities {
 
 interface Item {
     icon: string
+    buyable: boolean
     value: number
     sellable: boolean
     sellValue?: number
@@ -21,26 +22,23 @@ interface Item {
     description: string
 }
 
-type ItemList = "gem" | "diamond"
+const itemList = <const>["gem"]
+type ItemList = typeof itemList[number]
 export default <{ [key in ItemList]: Item }>{
     gem: {
         icon: "💎",
+        buyable: true,
         value: 1,
         sellable: true,
         sellValue: 1,
         type: ItemType.collectable,
         rarity: Rarities.common,
         description: "A gem collected from the deep mines. Been the most stable currency since 103BC"
-    },
-    diamond: {
-        icon: "💍",
-        value: 100,
-        sellable: true,
-        sellValue: 200,
-        type: ItemType.collectable,
-        rarity: Rarities.godly,
-        description: "A diamond found in the deepest mines. Worth 10x gems"
     }
+}
+
+export {
+    itemList
 }
 
 export type {

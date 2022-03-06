@@ -1,6 +1,6 @@
-import { Command } from "../command.js"
-import { SlashCommandBuilder } from "@discordjs/builders"
+import type { Command } from "../command.js"
 import pages from "../../ts/pages.js"
+import { SlashCommandBuilder } from "../../../node_modules/@discordjs/builders/dist/index.js"
 
 export default <Command>{
     dataBuilder: new SlashCommandBuilder()
@@ -19,18 +19,6 @@ export default <Command>{
         }
     ],
     execute: async (interaction) => {
-        await pages([
-            {
-                title: "Title #1",
-                description: "#1 description",
-                content: "**What is up?**\nPagman!"
-            },
-            {
-                title: "Title #2",
-                description: "#2 description",
-                content: "**What is up?**\nNot pagman!"
-            }
-        ], interaction)
-        console.log("ended")
+        pages(["pog", "man"], interaction)
     }
 }

@@ -6,11 +6,9 @@ if (process.argv.slice(2).join(" ").length !== 0) {
     console.log(eval(process.argv.slice(2).join(" ")), "\n")
 }
 
-const tableUsers = {}
 const users = db.get("users")
 if (!users) {
     console.log(chalk.red("No users"))
 } else {
-    Object.keys(users).forEach(key => tableUsers[key] = JSON.parse(users[key]))
-    console.table(tableUsers)
+    console.table(users)
 }

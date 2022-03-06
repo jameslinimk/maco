@@ -1,11 +1,10 @@
-import { Command } from "../command.js"
-import { SlashCommandBuilder } from "@discordjs/builders"
+import type { Item } from "../../ts/items.js"
+import type { Command } from "../command.js"
+import { SlashCommandBuilder } from "../../../node_modules/@discordjs/builders/dist/index.js"
 import pages from "../../ts/pages.js"
 import items from "../../ts/items.js"
-import type { Item } from "../../ts/items.js"
 import { MessageEmbed } from "discord.js"
-
-const capital = (string: string) => string.charAt(0).toUpperCase() + string.slice(1)
+import { capital, formatMoney } from "../../ts/globalFunctions.js"
 
 export default <Command>{
     dataBuilder: new SlashCommandBuilder()
@@ -14,14 +13,12 @@ export default <Command>{
     execute: async (interaction) => {
         const listItems = Object.keys(items).reduce((res, itemKey, i) => {
             const item: Item = items[itemKey]
-            const chunkIndex = Math.floor(i / 7)
 
-            if (!res[chunkIndex]) {
-                res[chunkIndex] = []
-            }
+            const chunkIndex = Math.floor(i / 7)
+            if (!res[chunkIndex]) res[chunkIndex] = []
 
             res[chunkIndex].push(
-                `${item.icon} **${capital(itemKey)}** - \`⭐x${item.rarity + 1}\` - [$${item.value}](http://example.com/)${item.sellable ? `/[$${item.sellValue}](http://example.com/) (sell price)` : " (not sellable)"}
+                `${item.icon} **${capital(itemKey)}** - \`⭐x${item.rarity + 1}\` - [${formatMoney(item.value)}](http://example.com/)${item.sellable ? `/[${formatMoney(item.sellValue)}](http://example.com/) (sell price)` : " (not sellable)"}
 ${item.description}\n`
             )
 

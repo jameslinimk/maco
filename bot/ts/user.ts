@@ -18,6 +18,8 @@ class User {
         }
     ) {
         if (data) {
+            this.id = data.id
+
             Object.keys(data).forEach(key => {
                 if (!(key in userDefaults)) {
                     delete data[key]
@@ -42,14 +44,22 @@ class User {
         })
     }
 
+    get money() {
+        return this.inventory.gem || 0
+    }
+
+    set money(money: number) {
+        this.inventory.gem = money
+    }
+
     save() {
-        db.set(`users.${this.id}`, JSON.stringify(this))
+        db.set(`users.${this.id}`, this)
     }
 
     static load(id: string) {
-        const raw = db.get(`users.${id}`)
-        if (!raw) return null
-        return new User("", JSON.parse(raw))
+        const data = db.get(`users.${id}`)
+        if (!data) return null
+        return new User("", data)
     }
 }
 
@@ -60,7 +70,7 @@ const test = () => {
     const missingTest = {
         id: "missing",
     }
-    db.set(`users.missing`, JSON.stringify(missingTest))
+    db.set(`users.missing`, missingTest)
     console.log("User.load(\"missing\")", User.load("missing"))
 
     // Testing user with extra attributes
@@ -72,7 +82,7 @@ const test = () => {
             gem: 5
         }
     }
-    db.set(`users.extra`, JSON.stringify(extraTest))
+    db.set(`users.extra`, extraTest)
     console.log("User.load(\"extra\")", User.load("extra"))
 
     // Testing user with good attributes
@@ -82,13 +92,18 @@ const test = () => {
             gem: 5
         }
     }
-    db.set(`users.good`, JSON.stringify(goodTest))
+    db.set(`users.good`, goodTest)
     console.log("User.load(\"good\")", User.load("good"))
 
     console.log("Done testing")
+
+    const testUser = new User("amongus")
+    testUser.save()
+
+    console.log(User.load("amongus"))
 }
 
-test()
+// test()
 
 export {
     User
