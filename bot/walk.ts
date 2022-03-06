@@ -12,7 +12,7 @@ const walkCommands = async (client: NewClient, dir = "") => {
     for (const file of files) {
         const lstat = await fs.lstat(`./bot/commands/${dir}/${file}`)
         if (lstat.isDirectory()) {
-            await walkCommands(client, file)
+            await walkCommands(client, `${dir}${(dir === "") ? "" : "/"}${file}`)
             continue
         }
         if (!lstat.isFile() || !file.endsWith(".js")) continue
@@ -51,7 +51,7 @@ const walkEvents = async (client: NewClient, dir = "") => {
     for (const file of files) {
         const lstat = await fs.lstat(`./bot/events/${dir}/${file}`)
         if (lstat.isDirectory()) {
-            await walkEvents(client, file)
+            await walkEvents(client, `${dir}${(dir === "") ? "" : "/"}${file}`)
             continue
         }
         if (!lstat.isFile() || !file.endsWith(".js")) continue

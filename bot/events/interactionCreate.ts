@@ -1,4 +1,5 @@
 import type { Event } from "./event.js"
+import db from "quick.db"
 
 export default <Event>((client) => {
     client.on("interactionCreate", async (interaction) => {
@@ -6,6 +7,23 @@ export default <Event>((client) => {
 
         const command = client.commands.get(interaction.commandName)
         if (!command) return
+
+        if (command.cooldown) {
+            const lastCommand = db.get(`cooldowns.${command.dataBuilder.name}.${interaction.user.id}`)
+
+            if (lastCommand && Date.now() - lastCommand < command.cooldown) {
+                console.log(Date.now() - lastCommand, command.cooldown)
+
+                const cooldown = command.cooldown - (Date.now() - lastCommand)
+                await interaction.reply({
+                    content: `\`⌛\` | Please wait ${(cooldown / 1000).toFixed(1)}s more to use this command!`,
+                    ephemeral: true
+                })
+                return
+            }
+
+            db.set(`cooldowns.${command.dataBuilder.name}.${interaction.user.id}`, Date.now())
+        }
 
         try {
             await command.execute(interaction)
