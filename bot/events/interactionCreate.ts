@@ -12,11 +12,8 @@ export default <Event>((client) => {
             const lastCommand = db.get(`cooldowns.${command.dataBuilder.name}.${interaction.user.id}`)
 
             if (lastCommand && Date.now() - lastCommand < command.cooldown) {
-                console.log(Date.now() - lastCommand, command.cooldown)
-
-                const cooldown = command.cooldown - (Date.now() - lastCommand)
                 await interaction.reply({
-                    content: `\`⌛\` | Please wait ${(cooldown / 1000).toFixed(1)}s more to use this command!`,
+                    content: `\`⌛\` | Please wait ${((command.cooldown - (Date.now() - lastCommand)) / 1000).toFixed(1)}s more to use this command!`,
                     ephemeral: true
                 })
                 return

@@ -3,18 +3,19 @@ import db = require("quick.db")
 
 type Inventory = { [key in ItemList]: number }
 const userDefaults = {
-    inventory: <Inventory>{
-        gem: 5
-    }
+    inventory: <Inventory>{ gem: 5 },
+    moneyHistory: []
 }
 class User {
     id: string
     inventory: Inventory
+    moneyHistory: string[]
     constructor(
         id: string,
         data?: {
             id: string,
-            inventory: Inventory
+            inventory: Inventory,
+            moneyHistory: string[]
         }
     ) {
         if (data) {
@@ -26,14 +27,16 @@ class User {
                     return
                 }
             })
+
             Object.keys(userDefaults).forEach(key => {
                 if (!(key in data)) {
+                    console.log("overrode", key)
                     data[key] = userDefaults[key]
                 }
             })
 
             Object.keys(data).forEach(key => {
-                this[key] = userDefaults[key]
+                this[key] = data[key]
             })
             return
         }

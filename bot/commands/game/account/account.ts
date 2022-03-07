@@ -1,8 +1,8 @@
-import type { Command } from "../command.js"
-import { SlashCommandBuilder } from "../../../node_modules/@discordjs/builders/dist/index.js"
-import { User } from "../../ts/user.js"
-import { MessageEmbed } from "discord.js"
-import { formatMoney } from "../../ts/globalFunctions.js"
+import type { Command } from "../../command.js"
+import { SlashCommandBuilder } from "../../../../node_modules/@discordjs/builders/dist/index.js"
+import { User } from "../../../ts/user.js"
+import { GuildMember, MessageEmbed } from "discord.js"
+import pages from "../../../ts/pages.js"
 
 export default <Command>{
     dataBuilder: new SlashCommandBuilder()
@@ -15,10 +15,6 @@ export default <Command>{
         .addSubcommand(command => command
             .setName("info")
             .setDescription("Get detailed information about your account!")
-        )
-        .addSubcommand(command => command
-            .setName("balance")
-            .setDescription("Get your total amount of money!")
         ),
     execute: async (interaction) => {
         switch (interaction.options.getSubcommand()) {
@@ -38,19 +34,26 @@ export default <Command>{
                 break
             }
             case "info": {
-                await interaction.reply({ content: "`⛔` | This command is a work in progress!" })
-                break
-            }
-            case "balance": {
                 const user = User.load(interaction.user.id)
                 if (!user) return interaction.reply({ content: "`⛔` | You don't have an account! Create one using `/account create`!" })
-                await interaction.reply({
-                    embeds: [
-                        new MessageEmbed()
-                            .setColor("BLURPLE")
-                            .setDescription(`Balance: [${formatMoney(user.money)}](https://example.com/)`)
-                    ]
-                })
+
+                const history = user.moneyHistory
+
+                const pageItems = history.reduce((res, history, i) => {
+                    const chunkIndex = Math.floor(i / 7)
+                    if (!res[chunkIndex]) res[chunkIndex] = []
+
+                    res[chunkIndex].push(
+                        `${history}\n`
+                    )
+
+                    return res
+                }, [])
+
+                pages(pageItems, interaction, new MessageEmbed()
+                    .setColor("BLURPLE")
+                    .setAuthor({ name: `${(<GuildMember>interaction.member).displayName}'s money history`, iconURL: (<GuildMember>interaction.member).displayAvatarURL() })
+                )
                 break
             }
             default: {

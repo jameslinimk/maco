@@ -22,19 +22,28 @@ interface Item {
     description: string
 }
 
-const itemList = <const>["gem"]
+const itemList = <const>["gem", "test"]
 type ItemList = typeof itemList[number]
 export default <{ [key in ItemList]: Item }>{
     gem: {
         icon: "💎",
+        buyable: false,
+        value: 1,
+        sellable: false,
+        type: ItemType.collectable,
+        rarity: Rarities.common,
+        description: "A gem collected from the deep mines. Been the most stable currency since 103BC"
+    },
+    test: {
+        icon: "📰",
         buyable: true,
         value: 1,
         sellable: true,
         sellValue: 1,
         type: ItemType.collectable,
-        rarity: Rarities.common,
-        description: "A gem collected from the deep mines. Been the most stable currency since 103BC"
-    }
+        rarity: Rarities.godly,
+        description: "A testing item"
+    },
 }
 
 export {

@@ -4,6 +4,7 @@ import { SlashCommandBuilder } from "../../../node_modules/@discordjs/builders/d
 import items, { itemList } from "../../ts/items.js"
 import { User } from "../../ts/user.js"
 import { capital, formatMoney } from "../../ts/globalFunctions.js"
+import { GuildMember, MessageEmbed } from "discord.js"
 
 export default <Command>{
     dataBuilder: new SlashCommandBuilder()
@@ -42,6 +43,13 @@ export default <Command>{
         user.money -= price
         user.save()
 
-        await interaction.reply({ content: `${item.icon} ${capital(itemKey)} x${amount}` })
+        await interaction.reply({
+            embeds: [
+                new MessageEmbed()
+                    .setColor("BLURPLE")
+                    .setAuthor({ iconURL: (<GuildMember>interaction.member).displayAvatarURL(), name: `${(<GuildMember>interaction.member).displayName}'s receipt` })
+                    .setDescription(`${interaction.user} bought ${item.icon} **${capital(itemKey)}** (x${amount}) for [${formatMoney(price)}](https://example.com/)`)
+            ]
+        })
     }
 }

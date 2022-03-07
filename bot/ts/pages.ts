@@ -77,7 +77,12 @@ export default async (pages: (string | string[])[], interaction: CommandInteract
         }
 
         const collector = interaction.channel.createMessageComponentCollector({
-            filter: i => i.user.id === interaction.user.id,
+            filter: async i => {
+                const reply = await interaction.fetchReply()
+                if (!reply) return false
+
+                return i.user.id === interaction.user.id && i.message.id === reply.id
+            },
             time: 15000
         })
 

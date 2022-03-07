@@ -1,5 +1,5 @@
 import type { GuildMember } from "discord.js"
-import { random } from "../../../ts/globalFunctions.js"
+import { formatMoney, random } from "../../../ts/globalFunctions.js"
 
 interface Event {
     /**
@@ -16,20 +16,32 @@ interface Event {
      *  - `{tag}` | Tag
      *  - `{mention}` | Mention
      *  - `{money}` | Amount of money gotten
+     *  - `{person}` | A random person
+     *  - `{place}` | A random place
      */
     messages: string[]
 }
+
+const randomPlaces = ["McDonalds", "your moms house", "your dads house", "the White House", "Subway", "Wendys", "Taco Bell", "CVS", "Wallgreens", "Joes Bagels", "Joes Juices", "Joes Pizza", "Joes house", "Home Depot", "Lowes", "Walmart", "Target", "Starbucks"]
+const randomPeople = ["Joe Biden", "Donald Trump", "your mom", "your dad", "your sister", "your brother", "dream", "a dream stan", "bob", "Rasputin", "Opera", "Beyoncé", "Dwayne Johnson", "the Rock", "John Cina", "Zhong Xina", "Will Smith", "Jayden Smith", "Eminem", "Robert Downy Jr.", "Justin Bieber", "Barack Obama", "Jeff Bezos", "Elon Musk", "Mark Zuckerberg", "Isaac Newton", "Jesus", "God", "the Buddha", "Taylor Swift", "Selena Gomez", "Kendall Jenner", "Madonna", "Gandhi", "Logan Paul", "Jake Paul", "Conner McGregor", "Floyd Mayweather", "Tom Brady", "Holdin Tudix", "Ray Piste", "Justin Hurass", "Ben Dover", "Confucius", "Christopher Columbus", "Albert Einstein"]
 
 const events: Event[] = [
     {
         money: [2, 10],
         weight: 10,
-        messages: ["{user} found {money} while going on a walk."]
+        messages: [
+            "{user} found {money} while going on a walk.",
+            "While walking back from {place}, {user} found {money}",
+            "{user} stole {money} from a {person}'s purse",
+            "While walking back from {place}, {user} robbed {person} for {money}",
+            "While in {place}, {user} killed {person} and stole {money}",
+            "{user} took pictures of {person}'s feet for {money}"
+        ]
     },
     {
-        money: [100, 200],
-        weight: 1,
-        messages: ["🎉 JACKPOT! {user} found {money} !"]
+        money: [1000, 2000],
+        weight: 0.1,
+        messages: ["🎉 JACKPOT! {user} won the lottery for {money} !"]
     }
 ]
 
@@ -54,13 +66,14 @@ const randomEvent = () => {
 }
 
 const parseEvent = (event: Event, user: GuildMember) => {
-    const message = event.messages[Math.floor(Math.random() * event.messages.length)]
     const money = random(event.money[0], event.money[1])
-
-    message.replaceAll("{user}", `${user.displayName}`)
-    message.replaceAll("{tag}", `${user.user.tag}`)
-    message.replaceAll("{mention}", `${user}`)
-    message.replaceAll("{money}", `${money}`)
+    const message = event.messages[Math.floor(Math.random() * event.messages.length)]
+        .replaceAll("{user}", `${user.displayName}`)
+        .replaceAll("{tag}", `${user.user.tag}`)
+        .replaceAll("{mention}", `${user}`)
+        .replaceAll("{money}", `[${formatMoney(money)}](https://example.com/)`)
+        .replaceAll("{place}", `*${randomPlaces[Math.floor(Math.random() * randomPlaces.length)]}*`)
+        .replaceAll("{person}", `*${randomPeople[Math.floor(Math.random() * randomPeople.length)]}*`)
 
     return { message, money }
 }
