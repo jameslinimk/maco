@@ -16,7 +16,7 @@ export default <Command>{
 
         const event = parseEvent(randomEvent(), <GuildMember>interaction.member)
         user.money += event.money
-        user.moneyHistory.push(`\`${defaultMomentFormat()}\` | \`/walk\` | [+${formatMoney(event.money)}](https://example.com/)`)
+        user.moneyHistory.push({ money: event.money, reason: "/walk", time: Date.now() })
         user.save()
 
         await interaction.reply({

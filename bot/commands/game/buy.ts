@@ -20,6 +20,7 @@ export default <Command>{
             )
             .setName("item")
             .setDescription("Select a buyable item to buy")
+            .setRequired(true)
         )
         .addIntegerOption(option => option
             .setRequired(false)
@@ -27,6 +28,11 @@ export default <Command>{
             .setMaxValue(99)
             .setName("amount")
             .setDescription("Select an amount of the given item to buy")
+        )
+        .addBooleanOption(option => option
+            .setRequired(false)
+            .setName("max")
+            .setDescription("Will buy the max amount of items you can afford (overrides amount)")
         ),
     execute: async (interaction) => {
         const user = User.load(interaction.user.id)
@@ -36,11 +42,19 @@ export default <Command>{
         const item: Item = items[itemKey]
         if (!item) return interaction.reply({ content: "`⛔` | That item doesn't exist!" })
         if (!item.buyable) return interaction.reply({ content: "`⛔` | That item isn't buyable!" })
-        const amount = interaction.options.getInteger("amount") || 1
 
-        const price = amount * item.value
-        if (user.money < price) return interaction.reply({ content: `\`💸\` | You don't have enough money! Missing: [${formatMoney(price - user.money)}](https://example.com/)` })
+        const maxAmount = Math.floor(user.money / item.value)
+        const max = interaction.options.getBoolean("max") || false
+
+        const amount = (!max) ? interaction.options.getInteger("amount") || 1 : maxAmount
+        const price = (!max)
+            ? amount * item.value
+            : maxAmount * item.value
+
+        if (user.money < price || user.money < item.value) return interaction.reply({ content: `\`💸\` | You don't have enough money! Missing: [${formatMoney((price - user.money === 0) ? item.value : price - user.money)}](https://example.com/)` })
         user.money -= price
+
+        user.moneyHistory.push({ money: -price, reason: `Bought (x${amount}) ${item.icon} ${capital(itemKey)}`, time: Date.now() })
         user.save()
 
         await interaction.reply({

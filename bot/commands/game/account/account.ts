@@ -1,8 +1,13 @@
 import type { Command } from "../../command.js"
 import { SlashCommandBuilder } from "../../../../node_modules/@discordjs/builders/dist/index.js"
 import { User } from "../../../ts/user.js"
-import { GuildMember, MessageEmbed } from "discord.js"
+import type { SingularMoneyHistory } from "../../../ts/user.js"
+import { MessageEmbed } from "discord.js"
+import type { GuildMember } from "discord.js"
 import pages from "../../../ts/pages.js"
+import { defaultMomentFormat, formatMoney } from "../../../ts/globalFunctions.js"
+
+const parseHistory = (history: SingularMoneyHistory) => `\`${defaultMomentFormat(new Date(history.time))}\` | [${formatMoney(history.money)}](https://example.com/) | \`${history.reason}\``
 
 export default <Command>{
     dataBuilder: new SlashCommandBuilder()
@@ -13,8 +18,8 @@ export default <Command>{
             .setDescription("Create a new account!")
         )
         .addSubcommand(command => command
-            .setName("info")
-            .setDescription("Get detailed information about your account!")
+            .setName("history")
+            .setDescription("Get your previous transaction and wealth gain history!")
         ),
     execute: async (interaction) => {
         switch (interaction.options.getSubcommand()) {
@@ -28,12 +33,13 @@ export default <Command>{
                             .setTitle("Created a new account!")
                             .setColor("BLURPLE")
                             .setDescription(`Don't know what to do? Here are some fun commands to get you started:
+
 \`/items\` - Get a list of all the items in the game`)
                     ]
                 })
                 break
             }
-            case "info": {
+            case "history": {
                 const user = User.load(interaction.user.id)
                 if (!user) return interaction.reply({ content: "`⛔` | You don't have an account! Create one using `/account create`!" })
 
@@ -44,7 +50,7 @@ export default <Command>{
                     if (!res[chunkIndex]) res[chunkIndex] = []
 
                     res[chunkIndex].push(
-                        `${history}\n`
+                        `${parseHistory(history)}\n`
                     )
 
                     return res

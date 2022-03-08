@@ -2,20 +2,22 @@ import { ItemList } from "./items.js"
 import db = require("quick.db")
 
 type Inventory = { [key in ItemList]: number }
+type SingularMoneyHistory = { money: number, reason: string, time: number }
+type MoneyHistory = SingularMoneyHistory[]
 const userDefaults = {
     inventory: <Inventory>{ gem: 5 },
-    moneyHistory: []
+    moneyHistory: <MoneyHistory>[]
 }
 class User {
     id: string
     inventory: Inventory
-    moneyHistory: string[]
+    moneyHistory: MoneyHistory
     constructor(
         id: string,
         data?: {
             id: string,
             inventory: Inventory,
-            moneyHistory: string[]
+            moneyHistory: MoneyHistory
         }
     ) {
         if (data) {
@@ -110,4 +112,10 @@ const test = () => {
 
 export {
     User
+}
+
+export type {
+    Inventory,
+    SingularMoneyHistory,
+    MoneyHistory
 }
