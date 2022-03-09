@@ -71,7 +71,7 @@ const parseEvent = (event: Event, user: GuildMember) => {
         .replaceAll("{user}", `${user.displayName}`)
         .replaceAll("{tag}", `${user.user.tag}`)
         .replaceAll("{mention}", `${user}`)
-        .replaceAll("{money}", `[${formatMoney(money)}](https://example.com/)`)
+        .replaceAll("{money}", formatMoney(money))
         .replaceAll("{place}", `*${randomPlaces[Math.floor(Math.random() * randomPlaces.length)]}*`)
         .replaceAll("{person}", `*${randomPeople[Math.floor(Math.random() * randomPeople.length)]}*`)
 

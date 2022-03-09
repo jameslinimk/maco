@@ -47,12 +47,12 @@ export default <{ [key in ItemList]: Item }>{
 }
 
 export {
-    itemList
+    itemList,
+    Rarities,
+    ItemType
 }
 
 export type {
-    ItemType,
-    Rarities,
     Item,
     ItemList
 }

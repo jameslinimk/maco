@@ -54,8 +54,16 @@ class User {
     }
 
     set money(money: number) {
-        this.inventory.gem = money
+        this.invSet("gem", money)
     }
+
+    invAdd(item: ItemList, amount = 1) {
+        if (!this.inventory[item]) this.inventory[item] = 0
+        this.inventory[item] += amount
+    }
+
+    invGet = (item: ItemList) => this.inventory[item] || 0
+    invSet = (item: ItemList, amount: number) => this.inventory[item] = amount
 
     save() {
         db.set(`users.${this.id}`, this)

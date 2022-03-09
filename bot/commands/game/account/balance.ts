@@ -10,12 +10,12 @@ export default <Command>{
         .setDescription("Get your total amount of money!"),
     execute: async (interaction) => {
         const user = User.load(interaction.user.id)
-        if (!user) return interaction.reply({ content: "`⛔` | You don't have an account! Create one using `/account create`!" })
+        if (!user) return interaction.reply("`⛔` | You don't have an account! Create one using `/account create`!")
         await interaction.reply({
             embeds: [
                 new MessageEmbed()
                     .setColor("BLURPLE")
-                    .setDescription(`Balance: [${formatMoney(user.money)}](https://example.com/)`)
+                    .setDescription(`Balance: ${formatMoney(user.money)}`)
             ]
         })
     }

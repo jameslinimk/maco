@@ -4,10 +4,10 @@ import { User } from "../../../ts/user.js"
 import type { SingularMoneyHistory } from "../../../ts/user.js"
 import { MessageEmbed } from "discord.js"
 import type { GuildMember } from "discord.js"
-import pages from "../../../ts/pages.js"
+import pages, { splitIntoChunks } from "../../../ts/pages.js"
 import { defaultMomentFormat, formatMoney } from "../../../ts/globalFunctions.js"
 
-const parseHistory = (history: SingularMoneyHistory) => `\`${defaultMomentFormat(new Date(history.time))}\` | [${formatMoney(history.money)}](https://example.com/) | \`${history.reason}\``
+const parseHistory = (history: SingularMoneyHistory) => `\`${defaultMomentFormat(new Date(history.time))}\` | ${formatMoney(history.money)} | \`${history.reason}\``
 
 export default <Command>{
     dataBuilder: new SlashCommandBuilder()
@@ -24,7 +24,7 @@ export default <Command>{
     execute: async (interaction) => {
         switch (interaction.options.getSubcommand()) {
             case "create": {
-                if (User.load(interaction.user.id)) return interaction.reply({ content: "`⛔` | You already have an account!" })
+                if (User.load(interaction.user.id)) return interaction.reply("`⛔` | You already have an account!")
                 const user = new User(interaction.user.id)
                 user.save()
                 await interaction.reply({
@@ -41,21 +41,10 @@ export default <Command>{
             }
             case "history": {
                 const user = User.load(interaction.user.id)
-                if (!user) return interaction.reply({ content: "`⛔` | You don't have an account! Create one using `/account create`!" })
-
+                if (!user) return interaction.reply("`⛔` | You don't have an account! Create one using `/account create`!")
                 const history = user.moneyHistory
 
-                const pageItems = history.reduce((res, history, i) => {
-                    const chunkIndex = Math.floor(i / 7)
-                    if (!res[chunkIndex]) res[chunkIndex] = []
-
-                    res[chunkIndex].push(
-                        `${parseHistory(history)}\n`
-                    )
-
-                    return res
-                }, [])
-
+                const pageItems = splitIntoChunks(history.map(history => `${parseHistory(history)}\n`), 7)
                 pages(pageItems, interaction, new MessageEmbed()
                     .setColor("BLURPLE")
                     .setAuthor({ name: `${(<GuildMember>interaction.member).displayName}'s money history`, iconURL: (<GuildMember>interaction.member).displayAvatarURL() })
@@ -63,7 +52,7 @@ export default <Command>{
                 break
             }
             default: {
-                await interaction.reply({ content: "`⛔` | That command doesn't exist!" })
+                await interaction.reply("`⛔` | That command doesn't exist!")
                 break
             }
         }

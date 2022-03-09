@@ -3,7 +3,6 @@ import type { Command } from "../../command.js"
 import { SlashCommandBuilder } from "../../../../node_modules/@discordjs/builders/dist/index.js"
 import { parseEvent, randomEvent } from "./events.js"
 import { User } from "../../../ts/user.js"
-import { defaultMomentFormat, formatMoney } from "../../../ts/globalFunctions.js"
 
 export default <Command>{
     dataBuilder: new SlashCommandBuilder()
@@ -12,7 +11,7 @@ export default <Command>{
     cooldown: 5000,
     execute: async (interaction) => {
         const user = User.load(interaction.user.id)
-        if (!user) return interaction.reply({ content: "`⛔` | You don't have an account! Make one using `/account create`!" })
+        if (!user) return interaction.reply("`⛔` | You don't have an account! Make one using `/account create`!")
 
         const event = parseEvent(randomEvent(), <GuildMember>interaction.member)
         user.money += event.money

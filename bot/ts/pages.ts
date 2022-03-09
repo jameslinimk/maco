@@ -134,3 +134,17 @@ export default async (pages: (string | string[])[], interaction: CommandInteract
         })
     })
 }
+
+const splitIntoChunks = <ArrayType>(array: ArrayType[], chunks: number) => {
+    return array.reduce<ArrayType[][]>((res, cur, i) => {
+        const chunkIndex = Math.floor(i / chunks)
+        if (!res[chunkIndex]) res[chunkIndex] = []
+
+        res[chunkIndex].push(cur)
+        return res
+    }, [])
+}
+
+export {
+    splitIntoChunks
+}
