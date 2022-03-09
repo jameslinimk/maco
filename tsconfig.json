@@ -6,7 +6,15 @@
             "ESNext",
         ],
         "module": "ESNext",
-        "moduleResolution": "nodenext",
+        "moduleResolution": "node",
         "sourceMap": true,
-    }
+        "skipLibCheck": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true
+    },
+    "exclude": [
+        "node_modules",
+        "./node_modules",
+        "./node_modules/*",
+    ]
 }

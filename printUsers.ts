@@ -1,5 +1,5 @@
 import chalk from "chalk"
-import db from "quick.db"
+import * as db from "quick.db"
 
 if (process.argv.slice(2).join(" ").length !== 0) {
     console.log(chalk.green(process.argv.slice(2).join(" ")))

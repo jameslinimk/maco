@@ -1,12 +1,18 @@
 import { ItemList } from "./items.js"
-import db = require("quick.db")
+import * as db from "quick.db"
 
 type Inventory = { [key in ItemList]: number }
 type SingularMoneyHistory = { money: number, reason: string, time: number }
 type MoneyHistory = SingularMoneyHistory[]
-const userDefaults = {
+const userDefaults = <const>{
     inventory: <Inventory>{ gem: 5 },
     moneyHistory: <MoneyHistory>[]
+}
+
+interface Data {
+    id: string,
+    inventory: Inventory,
+    moneyHistory: MoneyHistory
 }
 class User {
     id: string
@@ -14,31 +20,27 @@ class User {
     moneyHistory: MoneyHistory
     constructor(
         id: string,
-        data?: {
-            id: string,
-            inventory: Inventory,
-            moneyHistory: MoneyHistory
-        }
+        data?: Data
     ) {
         if (data) {
-            this.id = data.id
+            this.id = data.id;
 
-            Object.keys(data).forEach(key => {
+            (<(keyof Data)[]>Object.keys(data)).forEach(key => {
                 if (!(key in userDefaults)) {
                     delete data[key]
                     return
                 }
-            })
+            });
 
-            Object.keys(userDefaults).forEach(key => {
+            (<(keyof typeof userDefaults)[]>Object.keys(userDefaults)).forEach(key => {
                 if (!(key in data)) {
-                    console.log("overrode", key)
-                    data[key] = userDefaults[key]
+                    console.log("overrode", key);
+                    (<any>data[key]) = userDefaults[key]
                 }
-            })
+            });
 
-            Object.keys(data).forEach(key => {
-                this[key] = data[key]
+            (<(keyof Data)[]>Object.keys(data)).forEach(key => {
+                (<any>this[key]) = data[key]
             })
             return
         }
