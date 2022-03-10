@@ -8,7 +8,8 @@
 4. Run `npm i` to install the required dependencies
     > (if you get an error while installing `quick.db`, open a terminal with admin permissions and try again)
 5. Follow the instructions [here](config.md)
-6. Use `node .` to start the application up!
+6. Run `tsc` to convert all `.ts` files to `.js` ones
+7. Use `node .` to start the application up!
 
 ### Some stuff:
  - All js files within the [commands folder](bot/commands) with a default export are seen as a command. The skeleton to a command can be seen [here](bot/commands/command.ts)
