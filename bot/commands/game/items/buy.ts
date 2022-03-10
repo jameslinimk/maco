@@ -1,5 +1,5 @@
+import { SlashCommandBuilder } from "@discordjs/builders"
 import { GuildMember, MessageEmbed } from "discord.js"
-import { SlashCommandBuilder } from "../../../../node_modules/@discordjs/builders/dist/index.js"
 import { capital, formatMoney } from "../../../ts/globalFunctions.js"
 import type { Item, ItemList } from "../../../ts/items.js"
 import items, { itemList } from "../../../ts/items.js"

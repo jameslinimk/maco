@@ -1,5 +1,5 @@
+import { SlashCommandBuilder } from "@discordjs/builders"
 import { MessageEmbed } from "discord.js"
-import { SlashCommandBuilder } from "../../../../node_modules/@discordjs/builders/dist/index.js"
 import { formatMoney } from "../../../ts/globalFunctions.js"
 import { User } from "../../../ts/user.js"
 import type { Command } from "../../command.js"

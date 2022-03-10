@@ -1,3 +1,4 @@
+import { ApplicationCommandPermissions } from "discord.js"
 import { promises as fs } from "fs"
 import type { NewClient } from "../index.js"
 import type { Command } from "./commands/command.js"
@@ -28,16 +29,40 @@ const setCommandPermissions = async (client: NewClient, guildId: string) => {
     if (!guild) return
 
     (await guild.commands.fetch()).forEach(command => {
-        const permissions = client.commands.get(command.name)?.permissions
-        if (!permissions) return
+        const clientCommand = client.commands.get(command.name)
+        if (!clientCommand) return
+
+        client.commands.set(command.name, {
+            ...clientCommand,
+            id: command.id
+        })
+
+        if (!clientCommand.permissions) return
 
         guild.commands.permissions.add({
             command: command.id,
-            permissions: permissions.map(permission => {
+            permissions: clientCommand.permissions.map(permission => {
                 if (permission.id !== "EVERYONE") return permission
                 permission.id = guild.roles.everyone.id
                 return permission
             })
+        })
+    })
+}
+
+const updatePerms = async (commandName: string, newPermissions: ApplicationCommandPermissions[], client: NewClient, guildId: string) => {
+    const guild = client.guilds.cache.get(guildId)
+    if (!guild) return
+
+    const id = client.commands.get(commandName)?.id
+    if (!id) return
+
+    guild.commands.permissions.add({
+        command: id,
+        permissions: newPermissions.map(permission => {
+            if (permission.id !== "EVERYONE") return permission
+            permission.id = guild.roles.everyone.id
+            return permission
         })
     })
 }
@@ -65,5 +90,7 @@ const walkEvents = async (client: NewClient, dir = "") => {
 export {
     walkCommands,
     setCommandPermissions,
-    walkEvents
+    walkEvents,
+    updatePerms
 }
+

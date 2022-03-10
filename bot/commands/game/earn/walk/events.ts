@@ -1,5 +1,5 @@
 import type { GuildMember } from "discord.js"
-import { formatMoney, random } from "../../../ts/globalFunctions.js"
+import { formatMoney, random } from "../../../../ts/globalFunctions.js"
 
 interface Event {
     /**
