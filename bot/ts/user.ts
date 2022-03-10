@@ -60,7 +60,7 @@ class User {
     }
 
     set money(money: number) {
-        this.invSet("gem", money)
+        this.invSet("gem", Math.max(money, 0))
     }
 
     invAdd(item: ItemList, amount = 1) {

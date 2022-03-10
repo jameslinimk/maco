@@ -16,18 +16,129 @@ interface Event {
      *  - `{tag}` | Tag
      *  - `{mention}` | Mention
      *  - `{money}` | Amount of money gotten
+     *  - `{-money}` | Amount of money gotten but * -1
      *  - `{person}` | A random person
      *  - `{place}` | A random place
      */
     messages: string[]
 }
 
-const randomPlaces = ["McDonalds", "your moms house", "your dads house", "the White House", "Subway", "Wendys", "Taco Bell", "CVS", "Wallgreens", "Joes Bagels", "Joes Juices", "Joes Pizza", "Joes house", "Home Depot", "Lowes", "Walmart", "Target", "Starbucks"]
-const randomPeople = ["Joe Biden", "Donald Trump", "your mom", "your dad", "your sister", "your brother", "dream", "a dream stan", "bob", "Rasputin", "Opera", "Beyoncé", "Dwayne Johnson", "the Rock", "John Cina", "Zhong Xina", "Will Smith", "Jayden Smith", "Eminem", "Robert Downy Jr.", "Justin Bieber", "Barack Obama", "Jeff Bezos", "Elon Musk", "Mark Zuckerberg", "Isaac Newton", "Jesus", "God", "the Buddha", "Taylor Swift", "Selena Gomez", "Kendall Jenner", "Madonna", "Gandhi", "Logan Paul", "Jake Paul", "Conner McGregor", "Floyd Mayweather", "Tom Brady", "Holdin Tudix", "Ray Piste", "Justin Hurass", "Ben Dover", "Confucius", "Christopher Columbus", "Albert Einstein"]
+const randomPlaces = [
+    "McDonalds",
+    "your moms house",
+    "your dads house",
+    "the White House",
+    "Subway",
+    "Wendys",
+    "Taco Bell",
+    "CVS",
+    "Wallgreens",
+    "Joes Bagels",
+    "Joes Juices",
+    "Joes Pizza",
+    "Joes house",
+    "Home Depot",
+    "Lowes",
+    "Walmart",
+    "Target",
+    "Starbucks",
+    "School",
+    "your cousins house",
+    "your uncles house",
+    "your local drug dealers house",
+    "Statue of Liberty",
+    "Central Park",
+    "Empire State Building",
+    "the Blue House",
+    "the Twin Towers",
+    "Broadway",
+    "Times Square",
+    "Trump Tower",
+    "the MET",
+    "the Golden State Bridge",
+    "the Brooklyn State Bridge",
+    "Chick Fil A",
+    "Jamba Juice",
+    "Joe the Juice",
+    "Einstein Bros. Bagels",
+    "Shake Shack",
+    "Chipotle",
+    "a Wingstop",
+    "a Whataburger",
+    "Burger King",
+    "Hungry Jacks",
+    "a Carl's JR",
+    "a Jack in the Box",
+    "a Texas Roadhouse",
+    "a Outhouse Steakhouse",
+    "a Longhorn Steakhouse",
+    "a Nathans Famous ",
+    "an In-N-Out",
+    "a Auntie Annies",
+    "a Hardee's",
+    "a Duane Reade",
+    "Work",
+    "Home"
+]
+
+const randomPeople = [
+    "Joe Biden",
+    "Donald Trump",
+    "your mom",
+    "your dad",
+    "your sister",
+    "your brother",
+    "dream",
+    "a dream stan",
+    "bob",
+    "Rasputin",
+    "Opera",
+    "Beyoncé",
+    "Dwayne Johnson",
+    "the Rock",
+    "John Cina",
+    "Zhong Xina",
+    "Will Smith",
+    "Jayden Smith",
+    "Eminem",
+    "Robert Downy Jr.",
+    "Justin Bieber",
+    "Barack Obama",
+    "Jeff Bezos",
+    "Elon Musk",
+    "Mark Zuckerberg",
+    "Isaac Newton",
+    "Jesus",
+    "God",
+    "the Buddha",
+    "Taylor Swift",
+    "Selena Gomez",
+    "Kendall Jenner",
+    "Madonna",
+    "Gandhi",
+    "Logan Paul",
+    "Jake Paul",
+    "Conner McGregor",
+    "Floyd Mayweather",
+    "Tom Brady",
+    "Holdin Tudix",
+    "Ray Piste",
+    "Justin Hurass",
+    "Ben Dover",
+    "Confucius",
+    "Christopher Columbus",
+    "Albert Einstein",
+    "Xi Jinping",
+    "Mao Zedong",
+    "Genghis Khan",
+    "Shakespeare",
+    "Aristotle",
+    "Napoleon"
+]
 
 const events: Event[] = [
     {
-        money: [2, 10],
+        money: [5, 20],
         weight: 10,
         messages: [
             "{user} found {money} while going on a walk.",
@@ -35,13 +146,39 @@ const events: Event[] = [
             "{user} stole {money} from a {person}'s purse",
             "While walking back from {place}, {user} robbed {person} for {money}",
             "While in {place}, {user} killed {person} and stole {money}",
-            "{user} took pictures of {person}'s feet for {money}"
+            "{user} took pictures of {person}'s feet for {money}",
+            "{user} stole {money} from a homeless guy",
+            "{user} sold his kidneys for {money}",
+            "{user} flipped his NFTs for {money}",
+            "{user} screenshotted {person}'s NFTs for {money}",
+            "{user} hacked {place} for {money}",
+            "{user} assassinated {person} for {money}",
+            "{user} punched {person} for {money}",
+            "{user} stole {money} from {person} in Bitcoin",
+            "{user} scammed {person} for {money}"
+        ]
+    },
+    {
+        money: [-5, -10],
+        weight: 1,
+        messages: [
+            "Unlucky, {user} tripped and {-money} fell out of his pocket",
+            "Unlucky, {user} was caught lifting a shop and was fined {-money}",
+            "Unlucky, {user} was caught shoplifting and was fined {-money}",
+            "Unlucky, {user} was caught j-walking and was fined {-money}",
+            "Unlucky, {person} screenshotted {user}'s NFTs and {user} lost {-money}",
+            "Unlucky, the stock market crashed and {user} lost {-money}",
+            "Unlucky, {user} was fired from his job and lost {-money}"
         ]
     },
     {
         money: [1000, 2000],
-        weight: 0.1,
-        messages: ["🎉 JACKPOT! {user} won the lottery for {money} !"]
+        weight: 0.01,
+        messages: [
+            "💵 !JACKPOT! 💵 {user} teamed up to rob the biggest bank in town and got {money}!",
+            "🎰 !JACKPOT! 🎰 {user} purchased and won the lottery for {money}!",
+            "⚽ !JACKPOT! ⚽ {user} won a national soccer tournament for {money}!"
+        ]
     }
 ]
 
@@ -72,6 +209,7 @@ const parseEvent = (event: Event, user: GuildMember) => {
         .replaceAll("{tag}", `${user.user.tag}`)
         .replaceAll("{mention}", `${user}`)
         .replaceAll("{money}", formatMoney(money))
+        .replaceAll("{-money}", formatMoney(-money))
         .replaceAll("{place}", `*${randomPlaces[Math.floor(Math.random() * randomPlaces.length)]}*`)
         .replaceAll("{person}", `*${randomPeople[Math.floor(Math.random() * randomPeople.length)]}*`)
 
@@ -94,3 +232,4 @@ export {
     randomEvent,
     parseEvent
 }
+
