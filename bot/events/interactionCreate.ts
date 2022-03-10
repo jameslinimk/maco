@@ -1,5 +1,5 @@
+import db from "quick.db"
 import type { Event } from "./event.js"
-import * as db from "quick.db"
 
 export default <Event>((client) => {
     client.on("interactionCreate", async (interaction) => {

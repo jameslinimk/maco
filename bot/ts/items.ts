@@ -22,7 +22,7 @@ interface Item {
     description: string
 }
 
-const itemList = <const>["gem", "test"]
+const itemList = <const>["gem", "test", "nonBuyable", "nonSellable", "nonObtainable"]
 type ItemList = typeof itemList[number]
 export default <{ [key in ItemList]: Item }>{
     gem: {
@@ -37,13 +37,43 @@ export default <{ [key in ItemList]: Item }>{
     test: {
         icon: "📰",
         buyable: true,
-        value: 1,
+        value: 12,
         sellable: true,
-        sellValue: 1,
+        sellValue: 13,
         type: ItemType.collectable,
         rarity: Rarities.godly,
         description: "A testing item"
     },
+    nonBuyable: {
+        icon: "⛔",
+        buyable: false,
+        value: 11,
+        sellable: true,
+        sellValue: 41,
+        type: ItemType.collectable,
+        rarity: Rarities.uncommon,
+        description: "A testing item that is not buyable"
+    },
+    nonSellable: {
+        icon: "🤣",
+        buyable: true,
+        value: 4,
+        sellable: false,
+        sellValue: 95,
+        type: ItemType.collectable,
+        rarity: Rarities.epic,
+        description: "A testing item that is not sellable"
+    },
+    nonObtainable: {
+        icon: "💵",
+        buyable: false,
+        value: 69,
+        sellable: false,
+        sellValue: 420,
+        type: ItemType.collectable,
+        rarity: Rarities.rare,
+        description: "A testing item that is not sellable or buyable"
+    }
 }
 
 export {
@@ -51,8 +81,8 @@ export {
     Rarities,
     ItemType
 }
-
 export type {
     Item,
     ItemList
 }
+

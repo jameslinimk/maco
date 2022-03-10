@@ -1,9 +1,8 @@
-import type { Command } from "../../command.js"
-import { Item, ItemList, ItemType, Rarities } from "../../../ts/items.js"
-import { SlashCommandBuilder } from "../../../../node_modules/@discordjs/builders/dist/index.js"
-import items, { itemList } from "../../../ts/items.js"
-import { capital, formatMoney } from "../../../ts/globalFunctions.js"
 import { MessageEmbed } from "discord.js"
+import { SlashCommandBuilder } from "../../../../node_modules/@discordjs/builders/dist/index.js"
+import { capital, formatMoney } from "../../../ts/globalFunctions.js"
+import items, { Item, ItemList, itemList, ItemType, Rarities } from "../../../ts/items.js"
+import type { Command } from "../../command.js"
 
 export default <Command>{
     dataBuilder: new SlashCommandBuilder()
@@ -11,7 +10,7 @@ export default <Command>{
         .setDescription("Get info about a certain item")
         .addStringOption(option => option
             .addChoices(
-                itemList.reduce((res, cur) => {
+                itemList.reduce<([name: string, value: string])[]>((res, cur) => {
                     res.push([`${items[cur].icon} ${capital(cur)}`, cur])
                     return res
                 }, [])
@@ -33,7 +32,7 @@ export default <Command>{
                     name: "Buyable / Sellable", value:
                         ((item.buyable) ? `\`✅\` Yes (${formatMoney(item.value)})` : `\`⛔\` No (${formatMoney(item.value)})`)
                         + " / "
-                        + ((item.sellable) ? `\`✅\` Yes (${formatMoney(item.sellValue)})` : "`⛔` No")
+                        + ((item.sellable && item.sellValue) ? `\`✅\` Yes (${formatMoney(item.sellValue)})` : "`⛔` No")
                     , inline: true
                 },
                 { name: "Rarity", value: `\`⭐x${item.rarity}\` (${capital(Rarities[item.rarity])})`, inline: true },

@@ -1,6 +1,6 @@
-import type { Command } from "../command.js"
-import pages from "../../ts/pages.js"
 import { SlashCommandBuilder } from "../../../node_modules/@discordjs/builders/dist/index.js"
+import pages from "../../ts/pages.js"
+import type { Command } from "../command.js"
 
 export default <Command>{
     dataBuilder: new SlashCommandBuilder()

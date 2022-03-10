@@ -1,5 +1,5 @@
+import db from "quick.db"
 import { ItemList } from "./items.js"
-import * as db from "quick.db"
 
 type Inventory = { [key in ItemList]: number }
 type SingularMoneyHistory = { money: number, reason: string, time: number }
@@ -22,30 +22,34 @@ class User {
         id: string,
         data?: Data
     ) {
-        if (data) {
-            this.id = data.id;
+        // Defaults if none are provided
+        this.id = id
+        this.inventory = userDefaults.inventory
+        this.moneyHistory = userDefaults.moneyHistory
 
-            (<(keyof Data)[]>Object.keys(data)).forEach(key => {
+        if (data) {
+            this.id = data.id
+
+            Object.keys(data).forEach(key => {
                 if (!(key in userDefaults)) {
                     delete data[key]
                     return
                 }
-            });
+            })
 
-            (<(keyof typeof userDefaults)[]>Object.keys(userDefaults)).forEach(key => {
+            Object.keys(userDefaults).forEach(key => {
                 if (!(key in data)) {
-                    console.log("overrode", key);
-                    (<any>data[key]) = userDefaults[key]
+                    console.log("overrode", key)
+                    data[key] = userDefaults[key]
                 }
-            });
+            })
 
-            (<(keyof Data)[]>Object.keys(data)).forEach(key => {
-                (<any>this[key]) = data[key]
+            Object.keys(data).forEach(key => {
+                this[key] = data[key]
             })
             return
         }
 
-        this.id = id
         Object.keys(userDefaults).forEach(key => {
             this[key] = userDefaults[key]
         })
@@ -123,9 +127,9 @@ const test = () => {
 export {
     User
 }
-
 export type {
     Inventory,
     SingularMoneyHistory,
     MoneyHistory
 }
+

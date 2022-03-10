@@ -8,13 +8,13 @@ import type { Command } from "../../command.js"
 
 export default <Command>{
     dataBuilder: new SlashCommandBuilder()
-        .setName("items")
-        .setDescription("Get a list of all items"),
+        .setName("shop")
+        .setDescription("Get a list of all buyable items"),
     execute: async (interaction) => {
         const listItems = splitIntoChunks(
-            Object.keys(items).reduce((res, cur) => {
+            Object.keys(items).filter(key => (<Item>items[key]).buyable).reduce((res, cur) => {
                 const item: Item = items[cur]
-                res.push(`${item.icon} **${capital(cur)}** - \`⭐x${item.rarity + 1}\` - ${(item.buyable) ? "" : "(not buyable) "}${formatMoney(item.value)}${item.sellable && item.sellValue ? `/${formatMoney(item.sellValue)} (sell price)` : " (not sellable)"}
+                res.push(`${item.icon} **${capital(cur)}** - \`⭐x${item.rarity + 1}\` - ${formatMoney(item.value)}${item.sellable && item.sellValue ? `/${formatMoney(item.sellValue)} (sell price)` : " (not sellable)"}
 ${item.description}\n`)
                 return res
             }, <string[]>[])

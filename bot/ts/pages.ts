@@ -1,8 +1,8 @@
-import { MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu } from "discord.js"
 import type { CommandInteraction } from "discord.js"
+import { MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu } from "discord.js"
 
 export default async (pages: (string | string[])[], interaction: CommandInteraction, baseEmbed?: MessageEmbed, edit = false) => {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>((resolve, reject) => {
         const buttons = [
             new MessageActionRow()
                 .addComponents(
@@ -76,7 +76,7 @@ export default async (pages: (string | string[])[], interaction: CommandInteract
             })
         }
 
-        const collector = interaction.channel.createMessageComponentCollector({
+        const collector = interaction.channel?.createMessageComponentCollector({
             filter: async i => {
                 const reply = await interaction.fetchReply()
                 if (!reply) return false
@@ -85,6 +85,8 @@ export default async (pages: (string | string[])[], interaction: CommandInteract
             },
             time: 15000
         })
+
+        if (!collector) return reject("Collector didn't create!")
 
         collector.on("collect", async i => {
             switch (i.customId) {

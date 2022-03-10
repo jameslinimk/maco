@@ -23,12 +23,12 @@ const walkCommands = async (client: NewClient, dir = "") => {
     }
 }
 
-const setCommandPermissions = async (client: NewClient, guildId?: string) => {
+const setCommandPermissions = async (client: NewClient, guildId: string) => {
     const guild = client.guilds.cache.get(guildId)
     if (!guild) return
 
     (await guild.commands.fetch()).forEach(command => {
-        const permissions = client.commands.get(command.name).permissions
+        const permissions = client.commands.get(command.name)?.permissions
         if (!permissions) return
 
         guild.commands.permissions.add({

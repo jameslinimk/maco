@@ -1,8 +1,8 @@
 import { GuildMember, MessageEmbed } from "discord.js"
-import type { Command } from "../../command.js"
 import { SlashCommandBuilder } from "../../../../node_modules/@discordjs/builders/dist/index.js"
-import { parseEvent, randomEvent } from "./events.js"
 import { User } from "../../../ts/user.js"
+import type { Command } from "../../command.js"
+import { parseEvent, randomEvent } from "./events.js"
 
 export default <Command>{
     dataBuilder: new SlashCommandBuilder()

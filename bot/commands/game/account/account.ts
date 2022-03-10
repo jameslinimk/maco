@@ -1,11 +1,11 @@
-import type { Command } from "../../command.js"
-import { SlashCommandBuilder } from "../../../../node_modules/@discordjs/builders/dist/index.js"
-import { User } from "../../../ts/user.js"
-import type { SingularMoneyHistory } from "../../../ts/user.js"
-import { MessageEmbed } from "discord.js"
 import type { GuildMember } from "discord.js"
-import pages, { splitIntoChunks } from "../../../ts/pages.js"
+import { MessageEmbed } from "discord.js"
+import { SlashCommandBuilder } from "../../../../node_modules/@discordjs/builders/dist/index.js"
 import { defaultMomentFormat, formatMoney } from "../../../ts/globalFunctions.js"
+import pages, { splitIntoChunks } from "../../../ts/pages.js"
+import type { SingularMoneyHistory } from "../../../ts/user.js"
+import { User } from "../../../ts/user.js"
+import type { Command } from "../../command.js"
 
 const parseHistory = (history: SingularMoneyHistory) => `\`${defaultMomentFormat(new Date(history.time))}\` | ${formatMoney(history.money)} | \`${history.reason}\``
 

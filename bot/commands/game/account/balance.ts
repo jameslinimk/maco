@@ -1,8 +1,8 @@
-import type { Command } from "../../command.js"
-import { SlashCommandBuilder } from "../../../../node_modules/@discordjs/builders/dist/index.js"
-import { User } from "../../../ts/user.js"
 import { MessageEmbed } from "discord.js"
+import { SlashCommandBuilder } from "../../../../node_modules/@discordjs/builders/dist/index.js"
 import { formatMoney } from "../../../ts/globalFunctions.js"
+import { User } from "../../../ts/user.js"
+import type { Command } from "../../command.js"
 
 export default <Command>{
     dataBuilder: new SlashCommandBuilder()

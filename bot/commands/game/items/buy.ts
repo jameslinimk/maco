@@ -1,10 +1,10 @@
-import type { Command } from "../../command.js"
-import type { Item, ItemList } from "../../../ts/items.js"
+import { GuildMember, MessageEmbed } from "discord.js"
 import { SlashCommandBuilder } from "../../../../node_modules/@discordjs/builders/dist/index.js"
+import { capital, formatMoney } from "../../../ts/globalFunctions.js"
+import type { Item, ItemList } from "../../../ts/items.js"
 import items, { itemList } from "../../../ts/items.js"
 import { User } from "../../../ts/user.js"
-import { capital, formatMoney } from "../../../ts/globalFunctions.js"
-import { GuildMember, MessageEmbed } from "discord.js"
+import type { Command } from "../../command.js"
 
 export default <Command>{
     dataBuilder: new SlashCommandBuilder()
@@ -12,7 +12,7 @@ export default <Command>{
         .setDescription("Buy an item")
         .addStringOption(option => option
             .addChoices(
-                itemList.filter(item => items[item].buyable).reduce((res, cur) => {
+                itemList.filter(item => items[item].buyable).reduce<([name: string, value: string])[]>((res, cur) => {
                     const item = items[cur]
                     res.push([`${item.icon} ${capital(cur)} ${formatMoney(item.value, false)}`, cur])
                     return res
