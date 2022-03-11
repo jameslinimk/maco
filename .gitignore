@@ -3,6 +3,8 @@ package-lock.json
 
 config.ts
 
+.DS_Store
+
 /node_modules/
 /.history/
 *.js
