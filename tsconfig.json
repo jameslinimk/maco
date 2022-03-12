@@ -3,7 +3,7 @@
         "target": "ESNext",
         "watch": true,
         "lib": [
-            "ESNext",
+            "ESNext"
         ],
         "module": "ESNext",
         "moduleResolution": "node",
@@ -20,6 +20,6 @@
     "exclude": [
         "node_modules",
         "./node_modules",
-        "./node_modules/*",
+        "./node_modules/*"
     ]
 }
