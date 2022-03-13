@@ -2,7 +2,7 @@ import type { CommandInteraction } from "discord.js"
 import { MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu } from "discord.js"
 
 export default async (pages: (string | string[])[], interaction: CommandInteraction, baseEmbed?: MessageEmbed, edit = false) => {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>(async (resolve, reject) => {
         const buttons = [
             new MessageActionRow()
                 .addComponents(
@@ -76,9 +76,9 @@ export default async (pages: (string | string[])[], interaction: CommandInteract
             })
         }
 
+        const reply = await interaction.fetchReply()
         const collector = interaction.channel?.createMessageComponentCollector({
             filter: async i => {
-                const reply = await interaction.fetchReply()
                 if (!reply) return false
 
                 return i.user.id === interaction.user.id && i.message.id === reply.id
@@ -150,3 +150,4 @@ const splitIntoChunks = <ArrayType>(array: ArrayType[], chunks: number) => {
 export {
     splitIntoChunks
 }
+

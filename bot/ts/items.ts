@@ -80,82 +80,116 @@ const _items = <{ [key in ItemList]: Item }>{
 export default _items
 // TODO Change later ^^
 
+// TODO find a use for this. Too long for small devices
+// const formatItemList = (items: ItemList[], options: { [key in typeof formatOptions[number]]?: boolean }) => {
+//     formatOptions.forEach(key => {
+//         if (!(key in options)) {
+//             options[key] = true
+//         }
+//     })
+
+//     const longestOptions: { [key: number]: number } = {}
+//     const returnArray = [
+//         Object.keys(options).filter(key => options[key]).map(key => {
+//             return capital(key.split("").map(letter => {
+//                 if (letter.toUpperCase() === letter) return ` ${letter}`
+//                 return letter
+//             }).join("") + ":")
+//         }).filter(v => v)
+//     ]
+
+//     returnArray[1] = []
+//     returnArray[0].forEach((value, i) => {
+//         returnArray[1][i] = ""
+//         if (!value) return
+//         longestOptions[i] = value.length
+//     })
+
+//     items.forEach(key => {
+//         const item = _items[key]
+//         const array: string[] = []
+
+//         const checkNPush = (key: number, value: string) => {
+//             array.push(value)
+//             if (!longestOptions[key] || value.length > longestOptions[key]) longestOptions[key] = value.length
+//         }
+
+//         let i = 0
+//         Object.keys(options).forEach(optKey => {
+//             if (!options[optKey]) return
+//             switch (optKey) {
+//                 case "name":
+//                     checkNPush(i, `${capital(key)}`)
+//                     break
+//                 case "rarity":
+//                     checkNPush(i, capital(Rarities[item.rarity]) + ` (${item.rarity})`)
+//                     break
+//                 case "buyValue":
+//                     checkNPush(i, `${formatMoney(item.value, false)}${(!item.buyable) ? " (not buyable)" : ""}`)
+//                     break
+//                 case "sellValue":
+//                     if (!item.sellable || !item.sellValue) {
+//                         checkNPush(i, "Not sellable")
+//                         break
+//                     }
+
+//                     checkNPush(i, formatMoney(item.sellValue, false))
+//                     break
+//                 case "description":
+//                     checkNPush(i, item.description)
+//                     break
+//             }
+//             i++
+//         })
+
+//         returnArray.push(array)
+//     })
+
+//     return returnArray.map(row => row.map((value, i) => value?.padEnd(longestOptions[i] + 1)).join("| ")).join("\n")
+// }
+
 const formatOptions = <const>["name", "rarity", "buyValue", "sellValue", "description"]
-const formatItemList = (items: ItemList[], options: { [key in typeof formatOptions[number]]?: boolean }) => {
+const formatItem = (itemKey: ItemList, options: { [key in typeof formatOptions[number]]?: boolean } = {}) => {
     formatOptions.forEach(key => {
         if (!(key in options)) {
             options[key] = true
         }
     })
 
-    const longestOptions: { [key: number]: number } = {}
-    const returnArray = [
-        Object.keys(options).filter(key => options[key]).map(key => {
-            return capital(key.split("").map(letter => {
-                if (letter.toUpperCase() === letter) return ` ${letter}`
-                return letter
-            }).join("") + ":")
-        }).filter(v => v)
-    ]
+    const item = _items[itemKey]
+    let formattedString = ""
 
-    returnArray[1] = []
-    returnArray[0].forEach((value, i) => {
-        returnArray[1][i] = ""
-        if (!value) return
-        longestOptions[i] = value.length
-    })
+    if (options.name) {
+        formattedString += `${item.icon} **${capital(itemKey)}** `
+    }
+    if (options.rarity) {
+        formattedString += `- \`⭐x${item.rarity + 1}\` `
+    }
 
-    items.forEach(key => {
-        const item = _items[key]
-        const array: string[] = []
+    if (options.buyValue && options.sellValue) {
+        formattedString += `- ${formatMoney(item.value)}${(item.buyable) ? "" : " (not buyable)"}/${item.sellable && item.sellValue ? `${formatMoney(item.sellValue)} (sell)` : "(not sellable)"}`
+    } else if (options.sellValue) {
+        formattedString += `- ${item.sellable && item.sellValue ? `${formatMoney(item.sellValue)} (sell)` : "(not sellable)"}`
+    } else if (options.buyValue) {
+        formattedString += `- ${formatMoney(item.value)}${(item.buyable) ? "" : " (not buyable)"}`
+    }
 
-        const checkNPush = (key: number, value: string) => {
-            array.push(value)
-            if (!longestOptions[key] || value.length > longestOptions[key]) longestOptions[key] = value.length
-        }
+    if (options.description) {
+        return `${formattedString.trim()}\n${item.description}`
+    }
 
-        let i = 0
-        Object.keys(options).forEach(optKey => {
-            if (!options[optKey]) return
-            switch (optKey) {
-                case "name":
-                    checkNPush(i, `${capital(key)}`)
-                    break
-                case "rarity":
-                    checkNPush(i, capital(Rarities[item.rarity]) + ` (${item.rarity})`)
-                    break
-                case "buyValue":
-                    checkNPush(i, `${formatMoney(item.value, false)}${(!item.buyable) ? " (not buyable)" : ""}`)
-                    break
-                case "sellValue":
-                    if (!item.sellable || !item.sellValue) {
-                        checkNPush(i, "Not sellable")
-                        break
-                    }
-
-                    checkNPush(i, formatMoney(item.sellValue, false))
-                    break
-                case "description":
-                    checkNPush(i, item.description)
-                    break
-            }
-            i++
-        })
-
-        returnArray.push(array)
-    })
-
-    return returnArray.map(row => row.map((value, i) => value?.padEnd(longestOptions[i] + 1)).join("| ")).join("\n")
+    return formattedString.trim()
 }
 
 // console.log(
-//     formatItemList(["gem"], { description: false })
+//     formatItem("gem")
 // )
 
 export {
     itemList,
     Rarities,
-    ItemType
+    ItemType,
+    formatItem
 }
 export type {
     Item,

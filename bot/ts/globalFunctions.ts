@@ -8,12 +8,14 @@ const formatMoney = (money: number, link = true) => {
 const random = (min: number, max: number) => Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min)
 const defaultMomentFormat = (date?: Date) => moment(date).format("ha & M/D/YY")
 const wait = (time = 2000) => new Promise<"wait">((res) => setTimeout(() => res("wait"), time))
+const formatNumber = (number: number) => number.toLocaleString("en-US")
 
 export {
     capital,
     formatMoney,
     random,
     defaultMomentFormat,
-    wait
+    wait,
+    formatNumber
 }
 

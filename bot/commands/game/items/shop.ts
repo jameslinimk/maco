@@ -1,8 +1,7 @@
 import { SlashCommandBuilder } from "@discordjs/builders"
 import { MessageEmbed } from "discord.js"
-import { capital, formatMoney } from "../../../ts/globalFunctions.js"
-import type { Item } from "../../../ts/items.js"
-import items from "../../../ts/items.js"
+import type { ItemList } from "../../../ts/items.js"
+import items, { formatItem, Item } from "../../../ts/items.js"
 import pages, { splitIntoChunks } from "../../../ts/pages.js"
 import type { Command } from "../../command.js"
 
@@ -13,9 +12,7 @@ export default <Command>{
     execute: async (interaction) => {
         const listItems = splitIntoChunks(
             Object.keys(items).filter(key => (<Item>items[key]).buyable).reduce<string[]>((res, cur) => {
-                const item: Item = items[cur]
-                res.push(`${item.icon} **${capital(cur)}** - \`⭐x${item.rarity + 1}\` - ${formatMoney(item.value)}${item.sellable && item.sellValue ? `/${formatMoney(item.sellValue)} (sell price)` : " (not sellable)"}
-${item.description}\n`)
+                res.push(`${formatItem(<ItemList>cur)}\n`)
                 return res
             }, [])
             , 7)

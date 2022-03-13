@@ -1,7 +1,5 @@
 import type { CommandInteraction } from "discord.js"
-import { MessageEmbed } from "discord.js"
-import type { NewClient } from "../../.."
-import { trackEmbed } from "../../ts/music"
+import type { NewClient } from "../../../.."
 
 export default async (interaction: CommandInteraction) => {
     if (!interaction.member || !interaction.guild?.me) return
@@ -20,22 +18,17 @@ export default async (interaction: CommandInteraction) => {
         if (!queue.connection) await queue.connect(interaction.member.voice.channel)
     } catch {
         queue.destroy()
-        return interaction.reply({ content: "`⛔️` | Could not join your voice channel!", ephemeral: true })
+        return interaction.reply({ content: "`⛔️` | I could not join your voice channel!", ephemeral: true })
     }
 
     await interaction.deferReply()
     const track = await (<NewClient>interaction.client).player.search(query, {
         requestedBy: interaction.user
-    }).then(x => x.tracks[0])
-    if (!track) return interaction.followUp({ content: `\`⛔️\` | Track **${query}** not found!` })
-
-    queue.play(track)
-
-    return interaction.followUp({
-        embeds: [trackEmbed(track,
-            new MessageEmbed()
-                .setAuthor({ name: "⏱️ Loading track..." })
-                .setColor("BLURPLE")
-        )]
     })
+    if (!track || !track.tracks.length) return interaction.followUp({ content: `\`⛔️\` | No results for **${query}** found!` })
+
+    track.playlist ? queue.addTracks(track.tracks) : queue.addTrack(track.tracks[0])
+    if (!queue.playing) await queue.play()
+
+    return interaction.followUp(`\`⏱️\` | Loading ${track.playlist ? track.playlist.type : "track"}${track.playlist ? ` (${track.playlist.tracks.length} songs) (use \`/music queue\` to see the added songs!)` : ` "${track.tracks[0].title}"`}...`)
 }
