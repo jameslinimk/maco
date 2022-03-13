@@ -12,10 +12,7 @@ export default <Event>((client) => {
             const lastCommand = db.get(`cooldowns.${command.dataBuilder.name}.${interaction.user.id}`)
 
             if (lastCommand && Date.now() - lastCommand < command.cooldown) {
-                await interaction.reply({
-                    content: `\`⌛\` | Please wait ${((command.cooldown - (Date.now() - lastCommand)) / 1000).toFixed(1)}s more to use this command!`,
-                    ephemeral: true
-                })
+                await interaction.reply({ content: `\`⌛\` | Please wait ${((command.cooldown - (Date.now() - lastCommand)) / 1000).toFixed(1)}s more to use this command!`, ephemeral: true })
                 return
             }
 
@@ -26,10 +23,7 @@ export default <Event>((client) => {
             await command.execute(interaction)
         } catch (error) {
             console.error(error)
-            await interaction.reply({
-                content: "`⛔` | There was an error while executing this command!",
-                ephemeral: true
-            })
+            await interaction.reply({ content: "`⛔` | There was an error while executing this command!", ephemeral: true })
         }
     })
 })

@@ -14,7 +14,7 @@ export default <Command>{
         .setDescription("Get your inventory!"),
     execute: async (interaction) => {
         const user = User.load(interaction.user.id)
-        if (!user) return interaction.reply("`⛔` | You don't have an account! Create one using `/account create`!")
+        if (!user) return interaction.reply({ content: "`⛔` | You don't have an account! Create one using `/account create`!", ephemeral: true })
 
         const inventoryItems = splitIntoChunks<string>(
             Object.keys(user.inventory).filter(key => user.inventory[key] !== 0).reduce<string[]>((res, cur) => {
@@ -24,7 +24,7 @@ export default <Command>{
             }, [])
             , 7)
 
-        if (inventoryItems.length < 1) return interaction.reply("`🎒` | You don't have anything in your inventory! Buys some stuff using `/buy`!")
+        if (inventoryItems.length < 1) return interaction.reply({ content: "`🎒` | You don't have anything in your inventory! Buys some stuff using `/buy`!", ephemeral: true })
 
         pages(inventoryItems, interaction, new MessageEmbed()
             .setColor("BLURPLE")

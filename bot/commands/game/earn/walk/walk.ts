@@ -11,7 +11,7 @@ export default <Command>{
     cooldown: 5000,
     execute: async (interaction) => {
         const user = User.load(interaction.user.id)
-        if (!user) return interaction.reply("`⛔` | You don't have an account! Make one using `/account create`!")
+        if (!user) return interaction.reply({ content: "`⛔` | You don't have an account! Make one using `/account create`!", ephemeral: true })
 
         const event = parseEvent(randomEvent(), <GuildMember>interaction.member)
         user.money += event.money

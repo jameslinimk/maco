@@ -30,7 +30,7 @@ export default <Command>{
                     type: "USER"
                 }
             ], <NewClient>interaction.client, config.testGuildId)
-            return interaction.reply("`⛔` | You don't have a pending game to accept!")
+            return interaction.reply({ content: "`⛔` | You don't have a pending game to accept!", ephemeral: true })
         }
 
         console.log("pendingRps.ready(interaction.user.id)", pendingRps.ready(interaction.user.id))

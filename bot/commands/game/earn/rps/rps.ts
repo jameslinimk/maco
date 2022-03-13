@@ -22,9 +22,9 @@ export default <Command>{
         ),
     execute: async (interaction) => {
         const otherUser = interaction.options.getUser("user")
-        if (!otherUser) return interaction.reply("`⛔` | You didn't include a user to RPS with!")
+        if (!otherUser) return interaction.reply({ content: "`⛔` | You didn't include a user to RPS with!", ephemeral: true })
 
-        if (otherUser.id === interaction.user.id) return interaction.reply("`⛔` | You cant play RPS with yourself (get some friends)!")
+        if (otherUser.id === interaction.user.id) return interaction.reply({ content: "`⛔` | You cant play RPS with yourself (get some friends)!", ephemeral: true })
 
         const userAccount = User.load(interaction.user.id)
         const otherUserAccount = User.load(otherUser.id)

@@ -36,12 +36,12 @@ export default <Command>{
         ),
     execute: async (interaction) => {
         const user = User.load(interaction.user.id)
-        if (!user) return interaction.reply("`⛔` | You don't have an account! Make one using `/account create`!")
+        if (!user) return interaction.reply({ content: "`⛔` | You don't have an account! Make one using `/account create`!", ephemeral: true })
 
         const itemKey = <ItemList>interaction.options.getString("item")
         const item: Item = items[itemKey]
-        if (!item) return interaction.reply("`⛔` | That item doesn't exist!")
-        if (!item.buyable) return interaction.reply("`⛔` | That item isn't buyable!")
+        if (!item) return interaction.reply({ content: "`⛔` | That item doesn't exist!", ephemeral: true })
+        if (!item.buyable) return interaction.reply({ content: "`⛔` | That item isn't buyable!", ephemeral: true })
 
         const maxAmount = Math.floor(user.money / item.value)
         const max = interaction.options.getBoolean("max") || false
@@ -51,7 +51,7 @@ export default <Command>{
             ? amount * item.value
             : maxAmount * item.value
 
-        if (user.money < price || user.money < item.value) return interaction.reply(`\`💸\` | You don't have enough money! Missing: ${formatMoney((price - user.money === 0) ? item.value : price - user.money)}`)
+        if (user.money < price || user.money < item.value) return interaction.reply({ content: `\`💸\` | You don't have enough money! Missing: ${formatMoney((price - user.money === 0) ? item.value : price - user.money)}`, ephemeral: true })
         user.money -= price
         user.moneyHistory.push({ money: -price, reason: `Bought (x${amount}) ${item.icon} ${capital(itemKey)}`, time: Date.now() })
         user.invAdd(itemKey, amount)

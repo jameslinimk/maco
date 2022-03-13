@@ -12,12 +12,12 @@ export default <Command>{
         .setDescription("Get a list of all buyable items"),
     execute: async (interaction) => {
         const listItems = splitIntoChunks(
-            Object.keys(items).filter(key => (<Item>items[key]).buyable).reduce((res, cur) => {
+            Object.keys(items).filter(key => (<Item>items[key]).buyable).reduce<string[]>((res, cur) => {
                 const item: Item = items[cur]
                 res.push(`${item.icon} **${capital(cur)}** - \`⭐x${item.rarity + 1}\` - ${formatMoney(item.value)}${item.sellable && item.sellValue ? `/${formatMoney(item.sellValue)} (sell price)` : " (not sellable)"}
 ${item.description}\n`)
                 return res
-            }, <string[]>[])
+            }, [])
             , 7)
 
         pages(listItems, interaction, new MessageEmbed()
