@@ -29,5 +29,5 @@ export default async (interaction: CommandInteraction) => {
     track.playlist ? queue.addTracks(track.tracks) : queue.addTrack(track.tracks[0])
     if (!queue.playing) await queue.play()
 
-    return interaction.followUp(`\`⏱️\` | Loading ${track.playlist ? track.playlist.type : "track"}${track.playlist ? ` (${track.playlist.tracks.length} songs) (use \`/music queue\` to see the added songs!)` : ` "${track.tracks[0].title}"`}...`)
+    return interaction.followUp(`\`⏱️\` | Queueing ${track.playlist ? track.playlist.type : "track"}${track.playlist ? ` (${track.playlist.tracks.length} songs) (use \`/music queue\` to see the added songs!)` : ` "${track.tracks[0].title}"`}...`)
 }

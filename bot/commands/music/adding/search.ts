@@ -63,7 +63,7 @@ export default async (interaction: CommandInteraction) => {
         queue.addTrack(track)
         if (!queue.playing) await queue.play()
 
-        await interaction.followUp(`\`⏱️\` | Loading "${track.title}"...`)
+        await interaction.followUp(`\`⏱️\` | Queueing "${track.title}"...`)
         collector.stop("success")
         return
     })
