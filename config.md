@@ -1,3 +1,5 @@
+# Config setup
+
 | ⚠️ Be sure to change this files name to `config.ts` and replace *everything* with the code below! |
 | ------------------------------------------------------------------------------------------------ |
 
@@ -9,4 +11,4 @@ export default {
 }
 ```
 
-**Switching between testing and ton testing mode coming soon**
+## Switching between testing and ton testing mode coming soon

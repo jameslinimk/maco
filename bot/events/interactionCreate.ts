@@ -4,7 +4,7 @@ import type { Event } from "./event.js"
 export default <Event>((client) => {
     client.on("interactionCreate", async (interaction) => {
         if (!interaction.isCommand() || interaction.user.bot) return
-        if (interaction.channel?.type === "DM" || !interaction.member) return await interaction.reply("`⛔` | Please execute commands in a server!")
+        if (interaction.channel?.type === "DM" || !interaction.member || !interaction.guild || !interaction.guildId) return await interaction.reply("`⛔` | Please execute commands in a server!")
 
         const command = client.commands.get(interaction.commandName)
         if (!command) return

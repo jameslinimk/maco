@@ -1,10 +1,14 @@
 import { SlashCommandBuilder } from "@discordjs/builders"
+import type { CommandInteraction } from "discord.js"
+import type { NewClient } from "../../../index.js"
 import type { Command } from "../command.js"
 import play from "./adding/play.js"
 import search from "./adding/search.js"
 import loop from "./effects/loop.js"
+import volume from "./effects/volume.js"
 import playing from "./info/playing.js"
 import queue from "./info/queue.js"
+import back from "./seeking/back.js"
 import skip from "./seeking/skip.js"
 
 export default <Command>{
@@ -38,6 +42,10 @@ export default <Command>{
             .setDescription("Play the next song in queue!")
         )
         .addSubcommand(command => command
+            .setName("back")
+            .setDescription("Play the previous song!")
+        )
+        .addSubcommand(command => command
             .setName("playing")
             .setDescription("Get info about the currently playing song!")
         )
@@ -63,30 +71,61 @@ export default <Command>{
         ),
     execute: async (interaction) => {
         switch (interaction.options.getSubcommand()) {
-            case "play":
+            case "play": {
                 await play(interaction)
                 break
-            case "search":
+            }
+            case "search": {
                 await search(interaction)
                 break
-            case "queue":
+            }
+            case "queue": {
                 await queue(interaction)
                 break
-            case "skip":
+            }
+            case "skip": {
+                const check = await basicCheck(interaction)
+                if (check !== true) return
                 await skip(interaction)
                 break
-            case "playing":
+            }
+            case "back": {
+                const check = await basicCheck(interaction)
+                if (check !== true) return
+                await back(interaction)
+                break
+            }
+            case "playing": {
                 await playing(interaction)
                 break
-            case "loop":
+            }
+            case "loop": {
+                const check = await basicCheck(interaction)
+                if (check !== true) return
                 await loop(interaction)
                 break
-            case "volume":
-
+            }
+            case "volume": {
+                const check = await basicCheck(interaction)
+                if (check !== true) return
+                await volume(interaction)
                 break
-            default:
+            }
+            default: {
                 await interaction.reply({ content: "`⛔` | That command doesn't exist!", ephemeral: true })
                 break
+            }
         }
     }
+}
+
+const basicCheck = (interaction: CommandInteraction) => {
+    const queue = (<NewClient>interaction.client).player.getQueue(interaction.guildId!)
+
+    if (interaction.member!.permissions.has("MANAGE_MESSAGES")) return true
+
+    console.log(queue.connection.channel.members.filter(member => member.id !== interaction.client.user!.id && member.id !== interaction.user.id))
+    if (queue.connection.channel.members.filter(member => member.id !== interaction.client.user!.id && member.id !== interaction.user.id).size === 0) return true
+
+    return interaction.reply({ content: "`⛔` | You either must have the `MANAGE_MESSAGES` permission, or be alone in a voice channel to do that!", ephemeral: true })
 }

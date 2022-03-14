@@ -3,8 +3,7 @@ import type { NewClient } from "../../../.."
 import pages, { splitIntoChunks } from "../../../ts/pages.js"
 
 export default (interaction: CommandInteraction) => {
-    if (!interaction.guildId || !interaction.guild) return
-    const queue = (<NewClient>interaction.client).player.getQueue(interaction.guildId)
+    const queue = (<NewClient>interaction.client).player.getQueue(interaction.guildId!)
     const nowPlaying = queue.nowPlaying()
 
     if (!queue || !nowPlaying) return interaction.reply({ content: "`⛔` | There is no music currently playing, play some using `/music`!", ephemeral: true })
@@ -19,7 +18,7 @@ export default (interaction: CommandInteraction) => {
 
     pages(splitIntoChunks(tracks, Math.floor(4096 / longestTrackTitle) / 4), interaction, new MessageEmbed()
         .setColor("BLURPLE")
-        .setTitle(`Music queue for ${interaction.guild.name}`)
+        .setTitle(`Music queue for ${interaction.guild!.name}`)
         .setFooter({ text: "Use /music to see commands to add or skip music!" })
         .addField("🎶 Now playing:", `**${nowPlaying.title}** by ${nowPlaying.author} | Req by: ${nowPlaying.requestedBy}
 ${queue.createProgressBar()}`)
