@@ -1,5 +1,4 @@
-import type { Track } from "discord-player"
-import { Player } from "discord-player"
+import { Player, Track } from "discord-player"
 import { CommandInteraction, MessageEmbed } from "discord.js"
 import { NewClient } from "../.."
 

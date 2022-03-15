@@ -12,11 +12,10 @@ export default <Command>{
         .setDescription("Buy an item")
         .addStringOption(option => option
             .addChoices(
-                itemList.filter(item => items[item].buyable).reduce<([name: string, value: string])[]>((res, cur) => {
-                    const item = items[cur]
-                    res.push([`${item.icon} ${capital(cur)} ${formatMoney(item.value, false)}`, cur])
-                    return res
-                }, [])
+                itemList.filter(item => items[item].buyable).map(key => {
+                    const item = items[key]
+                    return ([`${item.icon} ${capital(key)} ${formatMoney(item.value, false)}`, key])
+                })
             )
             .setName("item")
             .setDescription("Select a buyable item to buy")

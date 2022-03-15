@@ -10,10 +10,7 @@ export default <Command>{
         .setDescription("Get info about a certain item")
         .addStringOption(option => option
             .addChoices(
-                itemList.reduce<([name: string, value: string])[]>((res, cur) => {
-                    res.push([`${items[cur].icon} ${capital(cur)}`, cur])
-                    return res
-                }, [])
+                itemList.map(key => [`${items[key].icon} ${capital(key)}`, key])
             )
             .setName("item")
             .setDescription("Item to see more info about")

@@ -6,5 +6,18 @@
         "**/*.js.map": {
             "when": "$(basename)"
         }
-    }
+    },
+    "cSpell.words": [
+        "bassboost",
+        "earrape",
+        "fadein",
+        "mcompand",
+        "mstlr",
+        "mstrr",
+        "nightcore",
+        "softlimiter",
+        "songlyrics",
+        "subboost",
+        "vaporwave"
+    ]
 }
