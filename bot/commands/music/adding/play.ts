@@ -24,10 +24,10 @@ export default async (interaction: CommandInteraction) => {
     const track = await (<NewClient>interaction.client).player.search(query, {
         requestedBy: interaction.user
     })
-    if (!track || !track.tracks.length) return interaction.followUp({ content: `\`⛔️\` | No results for **${query}** found!` })
+    if (!track || !track.tracks.length) return interaction.followUp({ content: `\`⛔️\` | No results for **${query}** found!`, ephemeral: true })
 
     track.playlist ? queue.addTracks(track.tracks) : queue.addTrack(track.tracks[0])
     if (!queue.playing) await queue.play()
 
-    return interaction.followUp(`\`⏱️\` | Queueing ${track.playlist ? track.playlist.type : "track"}${track.playlist ? ` (${track.playlist.tracks.length} songs) (use \`/music queue\` to see the added songs!)` : ` "${track.tracks[0].title}"`}...`)
+    return interaction.followUp(`\`⏱️\` | Queueing ${track.playlist ? track.playlist.type : "track"}${track.playlist ? ` (${track.playlist.tracks.length} songs) (use \`/music queue\` to see the added songs!)` : ` **${track.tracks[0].title}**`}...`)
 }

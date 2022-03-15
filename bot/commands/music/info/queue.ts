@@ -4,10 +4,12 @@ import pages, { splitIntoChunks } from "../../../ts/pages.js"
 
 export default (interaction: CommandInteraction) => {
     const queue = (<NewClient>interaction.client).player.getQueue(interaction.guildId!)
-    const nowPlaying = queue.nowPlaying()
 
-    if (!queue || !nowPlaying) return interaction.reply({ content: "`⛔` | There is no music currently playing, play some using `/music`!", ephemeral: true })
+    if (!queue) return interaction.reply({ content: "`⛔` | There is no music currently playing, play some using `/music`!", ephemeral: true })
     if (!queue.tracks[0]) return interaction.reply({ content: "`⛔` | The queue after the current song is empty, use `/music playing` to get info about the current song!", ephemeral: true })
+
+    const nowPlaying = queue.nowPlaying()
+    if (!nowPlaying) return interaction.reply({ content: "`⛔` | There is no music currently playing, play some using `/music`!", ephemeral: true })
 
     let longestTrackTitle = 0
     const tracks = queue.tracks.map((track, i) => {

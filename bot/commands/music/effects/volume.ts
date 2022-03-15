@@ -8,5 +8,6 @@ export default (interaction: CommandInteraction) => {
     const volume = interaction.options.getInteger("volume")
     if (!volume) return interaction.reply({ content: "`⛔` | You didn't supply a volume!", ephemeral: true })
 
-    return interaction.reply(queue.setVolume(volume) ? `\`🔊\` | Set the volume to \`${volume}\`!` : "`⛔` | Something went wrong.. please try again!")
+    if (queue.setVolume(volume)) return interaction.reply(`\`🔊\` | Set the volume to \`${volume}\`!`)
+    return interaction.reply({ content: "`⛔` | Something went wrong.. please try again!", ephemeral: true })
 }
