@@ -16,7 +16,7 @@ export default async (interaction: CommandInteraction) => {
 
     pages(lyrics.replaceAll("\n", "🎶").match(/.{1,4096}/g)!.map(v => v.replaceAll("🎶", "\n")), interaction, new MessageEmbed()
         .setColor("BLURPLE")
-        .setTitle(`Lyrics for "${nowPlaying.title}"`)
+        .setAuthor({ name: `Lyrics for "${nowPlaying.title}"` })
         .setFooter({ text: "Taken from google // Might not be accurate" })
         , true)
 }
