@@ -11,5 +11,5 @@ export default async (interaction: CommandInteraction) => {
     if (!AudioFilters.names.includes(filter)) return interaction.reply({ content: `\`⛔\` | **${filter}** isn't a valid filter!`, ephemeral: true })
 
     await queue.setFilters({ [filter]: true })
-    return interaction.reply(`\`🎶\` | Set filter to **${filter.toLowerCase()}**`)
+    return interaction.reply(`\`🎶\` | Set filter to **${filter.toLowerCase()}** (might take a bit to apply the filter)`)
 }

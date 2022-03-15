@@ -9,12 +9,14 @@ export default async (interaction: CommandInteraction) => {
 
     if (!queue || !nowPlaying) return interaction.reply({ content: "`⛔` | There is no music currently playing, play some using `/music`!", ephemeral: true })
 
+    await interaction.deferReply()
+
     const lyrics = await lyricsFinder(nowPlaying.title, nowPlaying.author)
     if (!lyrics) return interaction.reply({ content: `\`⛔\` | No lyrics for **${nowPlaying.title}** by ${nowPlaying.author} was found!`, ephemeral: true })
 
-    pages(lyrics.match(/.{1,4096}/g)!, interaction, new MessageEmbed()
+    pages(lyrics.replaceAll("\n", "🎶").match(/.{1,4096}/g)!.map(v => v.replaceAll("🎶", "\n")), interaction, new MessageEmbed()
         .setColor("BLURPLE")
         .setTitle(`Lyrics for "${nowPlaying.title}"`)
         .setFooter({ text: "Taken from google // Might not be accurate" })
-    )
+        , true)
 }
