@@ -96,7 +96,7 @@ const randomPeople = [
     "Beyoncé",
     "Dwayne Johnson",
     "the Rock",
-    "John Cina",
+    "John Cena",
     "Zhong Xina",
     "Will Smith",
     "Jayden Smith",
@@ -205,7 +205,7 @@ const randomEvent = () => {
 const parseEvent = (event: Event, user: GuildMember) => {
     const money = random(event.money[0], event.money[1])
     const message = event.messages[Math.floor(Math.random() * event.messages.length)]
-        .replaceAll("{user}", `${user.displayName}`)
+        .replaceAll("{user}", `*${user.displayName}*`)
         .replaceAll("{tag}", `${user.user.tag}`)
         .replaceAll("{mention}", `${user}`)
         .replaceAll("{money}", formatMoney(money))

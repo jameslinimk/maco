@@ -1,5 +1,6 @@
 import { ApplicationCommandPermissions } from "discord.js"
 import { promises as fs } from "fs"
+import path from "path"
 import type { NewClient } from "../index.js"
 import type { Command } from "./commands/command.js"
 import type { Event } from "./events/event.js"
@@ -7,19 +8,18 @@ import type { Event } from "./events/event.js"
 /**
  * Walk through folders and sub-folders and set their corresponding command on the client
  */
-const walkCommands = async (client: NewClient, dir = "") => {
-    const files = await fs.readdir(`./bot/commands/${dir}`)
-
-    for (const file of files) {
-        const lstat = await fs.lstat(`./bot/commands/${dir}/${file}`)
+const walkCommands = async (client: NewClient, directory: string) => {
+    for (const file of await fs.readdir(directory)) {
+        const absolute = path.join(directory, file)
+        const lstat = await fs.stat(absolute)
         if (lstat.isDirectory()) {
-            await walkCommands(client, `${dir}${(dir === "") ? "" : "/"}${file}`)
+            await walkCommands(client, absolute)
             continue
         }
         if (!lstat.isFile() || !file.endsWith(".js")) continue
 
-        const command: Command = (await import(`../bot/commands/${dir}/${file}`)).default
-        if (!command?.dataBuilder || !command?.execute) continue
+        const command: Command = (await import(`../${absolute}`)).default
+        if (!command?.dataBuilder || !command?.execute || typeof command.execute !== "function") continue
         client.commands.set(command.dataBuilder.name, command)
     }
 }
@@ -70,18 +70,17 @@ const updatePerms = async (commandName: string, newPermissions: ApplicationComma
 /**
  * Walk through folders and sub-folders and set their corresponding event on the client
  */
-const walkEvents = async (client: NewClient, dir = "") => {
-    const files = await fs.readdir(`./bot/events/${dir}`)
-
-    for (const file of files) {
-        const lstat = await fs.lstat(`./bot/events/${dir}/${file}`)
+const walkEvents = async (client: NewClient, directory: string) => {
+    for (const file of await fs.readdir(directory)) {
+        const absolute = path.join(directory, file)
+        const lstat = await fs.stat(absolute)
         if (lstat.isDirectory()) {
-            await walkEvents(client, `${dir}${(dir === "") ? "" : "/"}${file}`)
+            await walkEvents(client, absolute)
             continue
         }
         if (!lstat.isFile() || !file.endsWith(".js")) continue
 
-        const event: Event = (await import(`../bot/events/${dir}/${file}`)).default
+        const event: Event = (await import(`../${absolute}`)).default
         if (typeof event !== "function") continue
         event(client)
     }

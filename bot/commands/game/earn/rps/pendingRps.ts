@@ -33,6 +33,9 @@ interface PendingRpsEvents {
 }
 
 class PendingRps extends TypedEmitter<PendingRpsEvents> {
+    /**
+     * <away, home>
+     */
     pending: Map<string, string>
     playersWithHome: Set<string>
 

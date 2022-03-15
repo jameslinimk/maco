@@ -17,11 +17,10 @@ export default <Command>{
         if (!user) return interaction.reply({ content: "`⛔` | You don't have an account! Create one using `/account create`!", ephemeral: true })
 
         const inventoryItems = splitIntoChunks<string>(
-            Object.keys(user.inventory).filter(key => user.inventory[key] !== 0).reduce<string[]>((res, cur) => {
-                const item: Item = items[cur]
-                res.push(`${item.icon} **${capital(cur)}** - ${item.sellable && item.sellValue ? `${formatMoney(item.sellValue)} (Total: ${formatMoney(item.sellValue * user.inventory[cur])})` : " (not sellable)"}\n`)
-                return res
-            }, [])
+            Object.keys(user.inventory).filter(key => user.inventory[key] !== 0).map(key => {
+                const item: Item = items[key]
+                return `${item.icon} **${capital(key)}** x${user.inventory[key]} - ${item.sellable && item.sellValue ? `${formatMoney(item.sellValue)} (Total: ${formatMoney(item.sellValue * user.inventory[key])})` : " (not sellable)"}\n`
+            })
             , 7)
 
         if (inventoryItems.length < 1) return interaction.reply({ content: "`🎒` | You don't have anything in your inventory! Buys some stuff using `/buy`!", ephemeral: true })

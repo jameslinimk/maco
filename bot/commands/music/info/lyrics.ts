@@ -5,7 +5,7 @@ import pages from "../../../ts/pages.js"
 
 export default async (interaction: CommandInteraction) => {
     const queue = (<NewClient>interaction.client).player.getQueue(interaction.guildId!)
-    const nowPlaying = queue.nowPlaying()
+    const nowPlaying = queue?.nowPlaying()
 
     if (!queue || !nowPlaying) return interaction.reply({ content: "`⛔` | There is no music currently playing, play some using `/music`!", ephemeral: true })
 

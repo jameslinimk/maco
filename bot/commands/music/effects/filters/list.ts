@@ -48,6 +48,6 @@ export default (interaction: CommandInteraction) => {
     pages(formattedDescriptions, interaction, new MessageEmbed()
         .setColor("BLURPLE")
         .setTitle("List of all filters")
-        .setFooter({ text: "Use \"/music filter list(1/2) <filter>\" to enable a filter. (Filters are split up into 2 lists due to amount)" })
+        .setFooter({ text: "Use \"/music filter list<1/2> <filter>\" to enable a filter. (Filters are split up into 2 lists due to amount)" })
     )
 }

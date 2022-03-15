@@ -19,9 +19,8 @@ const client = <NewClient>new Client({
     ]
 })
 client.commands = new Map()
-await walkCommands(client)
-await walkEvents(client)
 musicSetup(client)
+await Promise.all([walkCommands(client, "./bot/commands"), walkEvents(client, "./bot/events")])
 
 /* ------------------------------- For testing ------------------------------ */
 const rest = new REST({ version: "9" }).setToken(config.token)

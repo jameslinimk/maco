@@ -1,5 +1,6 @@
 import type { CommandInteraction } from "discord.js"
 import type { NewClient } from "../../../.."
+import { defaultOptions } from "../../../ts/music.js"
 
 export default async (interaction: CommandInteraction) => {
     if (!interaction.member!.voice.channelId || !interaction.member!.voice.channel) return interaction.reply({ content: "`⛔️` | You are not in a voice channel!", ephemeral: true })
@@ -8,6 +9,7 @@ export default async (interaction: CommandInteraction) => {
     const query = interaction.options.getString("query")
     if (!query) return interaction.reply({ content: "`⛔️` | You didn't supply a query!", ephemeral: true })
     const queue = (<NewClient>interaction.client).player.createQueue(interaction.guild!, {
+        ...defaultOptions,
         metadata: {
             channel: interaction.channel
         }

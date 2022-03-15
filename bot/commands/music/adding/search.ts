@@ -3,6 +3,7 @@ import type { CommandInteraction } from "discord.js"
 import { MessageEmbed } from "discord.js"
 import type { NewClient } from "../../../.."
 import { formatNumber } from "../../../ts/globalFunctions.js"
+import { defaultOptions } from "../../../ts/music.js"
 import pages, { splitIntoChunks } from "../../../ts/pages.js"
 
 export default async (interaction: CommandInteraction) => {
@@ -12,6 +13,7 @@ export default async (interaction: CommandInteraction) => {
     const query = interaction.options.getString("query")
     if (!query) return interaction.reply({ content: "`⛔️` | You didn't supply a query!", ephemeral: true })
     const queue = (<NewClient>interaction.client).player.createQueue(interaction.guild!, {
+        ...defaultOptions,
         metadata: {
             channel: interaction.channel
         }

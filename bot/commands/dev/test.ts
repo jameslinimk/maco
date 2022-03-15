@@ -5,7 +5,8 @@ import type { Command } from "../command.js"
 export default <Command>{
     dataBuilder: new SlashCommandBuilder()
         .setName("test")
-        .setDescription("A dev-locked testing command!"),
+        .setDescription("A dev-locked testing command!")
+        .setDefaultPermission(false),
     permissions: [
         {
             id: "EVERYONE",
