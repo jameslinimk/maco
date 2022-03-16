@@ -1,29 +1,30 @@
 import { SlashCommandBuilder } from "@discordjs/builders"
-import { GuildMember, MessageEmbed } from "discord.js"
+import type { GuildMember } from "discord.js"
+import { MessageEmbed } from "discord.js"
 import { User } from "../../../../ts/user.js"
 import type { Command } from "../../../command.js"
 import { parseEvent, randomEvent } from "./events.js"
 
 export default <Command>{
-    dataBuilder: new SlashCommandBuilder()
-        .setName("walk")
-        .setDescription("Go for a walk to get money and encounter events!"),
-    cooldown: 5000,
-    execute: async (interaction) => {
-        const user = User.load(interaction.user.id)
-        if (!user) return interaction.reply({ content: "`⛔` | You don't have an account! Make one using `/account create`!", ephemeral: true })
+	dataBuilder: new SlashCommandBuilder()
+		.setName("walk")
+		.setDescription("Go for a walk to get money and encounter events!"),
+	cooldown: 5000,
+	execute: async (interaction) => {
+		const user = User.load(interaction.user.id)
+		if (!user) return interaction.reply({ content: "`⛔` | You don't have an account! Make one using `/account create`!", ephemeral: true })
 
-        const event = parseEvent(randomEvent(), <GuildMember>interaction.member)
-        user.money += event.money
-        user.moneyHistory.push({ money: event.money, reason: "/walk", time: Date.now() })
-        user.save()
+		const event = parseEvent(randomEvent(), <GuildMember>interaction.member)
+		user.money += event.money
+		user.moneyHistory.push({ money: event.money, reason: "/walk", time: Date.now() })
+		user.save()
 
-        await interaction.reply({
-            embeds: [
-                new MessageEmbed()
-                    .setColor("BLURPLE")
-                    .setDescription(event.message)
-            ]
-        })
-    }
+		await interaction.reply({
+			embeds: [
+				new MessageEmbed()
+					.setColor("BLURPLE")
+					.setDescription(event.message)
+			]
+		})
+	}
 }

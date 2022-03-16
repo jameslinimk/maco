@@ -1,81 +1,81 @@
 import { capital, formatMoney } from "./globalFunctions.js"
 
 enum ItemType {
-    "collectable"
+	"collectable"
 }
 enum Rarities {
-    "common",
-    "uncommon",
-    "rare",
-    "epic",
-    "legendary",
-    "unique",
-    "godly"
+	"common",
+	"uncommon",
+	"rare",
+	"epic",
+	"legendary",
+	"unique",
+	"godly"
 }
 
 interface Item {
-    icon: string
-    buyable: boolean
-    value: number
-    sellable: boolean
-    sellValue?: number
-    type: ItemType
-    rarity: Rarities
-    description: string
+	icon: string
+	buyable: boolean
+	value: number
+	sellable: boolean
+	sellValue?: number
+	type: ItemType
+	rarity: Rarities
+	description: string
 }
 
-const itemList = <const>["gem", "test", "nonBuyable", "nonSellable", "nonObtainable"]
+const itemList = <const>[ "gem", "test", "nonBuyable", "nonSellable", "nonObtainable" ]
 type ItemList = typeof itemList[number]
 const _items = <{ [key in ItemList]: Item }>{
-    gem: {
-        icon: "💎",
-        buyable: false,
-        value: 1,
-        sellable: false,
-        type: ItemType.collectable,
-        rarity: Rarities.common,
-        description: "A gem collected from the deep mines. Been the most stable currency since 103BC"
-    },
-    test: {
-        icon: "📰",
-        buyable: true,
-        value: 12,
-        sellable: true,
-        sellValue: 13,
-        type: ItemType.collectable,
-        rarity: Rarities.godly,
-        description: "A testing item"
-    },
-    nonBuyable: {
-        icon: "⛔",
-        buyable: false,
-        value: 11,
-        sellable: true,
-        sellValue: 41,
-        type: ItemType.collectable,
-        rarity: Rarities.uncommon,
-        description: "A testing item that is not buyable"
-    },
-    nonSellable: {
-        icon: "🤣",
-        buyable: true,
-        value: 4,
-        sellable: false,
-        sellValue: 95,
-        type: ItemType.collectable,
-        rarity: Rarities.epic,
-        description: "A testing item that is not sellable"
-    },
-    nonObtainable: {
-        icon: "💵",
-        buyable: false,
-        value: 69,
-        sellable: false,
-        sellValue: 420,
-        type: ItemType.collectable,
-        rarity: Rarities.rare,
-        description: "A testing item that is not sellable or buyable"
-    }
+	gem: {
+		icon: "💎",
+		buyable: false,
+		value: 1,
+		sellable: false,
+		type: ItemType.collectable,
+		rarity: Rarities.common,
+		description: "A gem collected from the deep mines. Been the most stable currency since 103BC"
+	},
+	test: {
+		icon: "📰",
+		buyable: true,
+		value: 12,
+		sellable: true,
+		sellValue: 13,
+		type: ItemType.collectable,
+		rarity: Rarities.godly,
+		description: "A testing item"
+	},
+	nonBuyable: {
+		icon: "⛔",
+		buyable: false,
+		value: 11,
+		sellable: true,
+		sellValue: 41,
+		type: ItemType.collectable,
+		rarity: Rarities.uncommon,
+		description: "A testing item that is not buyable"
+	},
+	nonSellable: {
+		icon: "🤣",
+		buyable: true,
+		value: 4,
+		sellable: false,
+		sellValue: 95,
+		type: ItemType.collectable,
+		rarity: Rarities.epic,
+		description: "A testing item that is not sellable"
+	},
+	nonObtainable: {
+		icon: "💵",
+		buyable: false,
+		value: 69,
+		sellable: false,
+		sellValue: 420,
+		type: ItemType.collectable,
+		rarity: Rarities.rare,
+		description: "A testing item that is not sellable or buyable"
+	}
 }
 export default _items
 // TODO Change later ^^
@@ -148,37 +148,37 @@ export default _items
 //     return returnArray.map(row => row.map((value, i) => value?.padEnd(longestOptions[i] + 1)).join("| ")).join("\n")
 // }
 
-const formatOptions = <const>["name", "rarity", "buyValue", "sellValue", "description"]
+const formatOptions = <const>[ "name", "rarity", "buyValue", "sellValue", "description" ]
 const formatItem = (itemKey: ItemList, options: { [key in typeof formatOptions[number]]?: boolean } = {}) => {
-    formatOptions.forEach(key => {
-        if (!(key in options)) {
-            options[key] = true
-        }
-    })
+	formatOptions.forEach(key => {
+		if (!(key in options)) {
+			options[key] = true
+		}
+	})
 
-    const item = _items[itemKey]
-    let formattedString = ""
+	const item = _items[itemKey]
+	let formattedString = ""
 
-    if (options.name) {
-        formattedString += `${item.icon} **${capital(itemKey)}** `
-    }
-    if (options.rarity) {
-        formattedString += `- \`⭐x${item.rarity + 1}\` `
-    }
+	if (options.name) {
+		formattedString += `${item.icon} **${capital(itemKey)}** `
+	}
+	if (options.rarity) {
+		formattedString += `- \`⭐x${item.rarity + 1}\` `
+	}
 
-    if (options.buyValue && options.sellValue) {
-        formattedString += `- ${formatMoney(item.value)}${(item.buyable) ? "" : " (not buyable)"}/${item.sellable && item.sellValue ? `${formatMoney(item.sellValue)} (sell)` : "(not sellable)"}`
-    } else if (options.sellValue) {
-        formattedString += `- ${item.sellable && item.sellValue ? `${formatMoney(item.sellValue)} (sell)` : "(not sellable)"}`
-    } else if (options.buyValue) {
-        formattedString += `- ${formatMoney(item.value)}${(item.buyable) ? "" : " (not buyable)"}`
-    }
+	if (options.buyValue && options.sellValue) {
+		formattedString += `- ${formatMoney(item.value)}${(item.buyable) ? "" : " (not buyable)"}/${item.sellable && item.sellValue ? `${formatMoney(item.sellValue)} (sell)` : "(not sellable)"}`
+	} else if (options.sellValue) {
+		formattedString += `- ${item.sellable && item.sellValue ? `${formatMoney(item.sellValue)} (sell)` : "(not sellable)"}`
+	} else if (options.buyValue) {
+		formattedString += `- ${formatMoney(item.value)}${(item.buyable) ? "" : " (not buyable)"}`
+	}
 
-    if (options.description) {
-        return `${formattedString.trim()}\n${item.description}`
-    }
+	if (options.description) {
+		return `${formattedString.trim()}\n${item.description}`
+	}
 
-    return formattedString.trim()
+	return formattedString.trim()
 }
 
 // console.log(
@@ -186,14 +186,14 @@ const formatItem = (itemKey: ItemList, options: { [key in typeof formatOptions[n
 // )
 
 export {
-    itemList,
-    Rarities,
-    ItemType,
-    formatItem
+	itemList,
+	Rarities,
+	ItemType,
+	formatItem
 }
 export type {
-    Item,
-    ItemList
+	Item,
+	ItemList
 }
 
 

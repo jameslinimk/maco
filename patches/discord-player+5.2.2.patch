@@ -1,0 +1,13 @@
+diff --git a/node_modules/discord-player/dist/index.d.ts b/node_modules/discord-player/dist/index.d.ts
+index ca911d3..76f1d78 100644
+--- a/node_modules/discord-player/dist/index.d.ts
++++ b/node_modules/discord-player/dist/index.d.ts
+@@ -271,7 +271,7 @@ declare class Player extends TypedEmitter<PlayerEvents> {
+      * @param {GuildResolvable} guild The guild id
+      * @returns {Queue}
+      */
+-    getQueue<T = unknown>(guild: GuildResolvable): Queue<T>;
++    getQueue<T = unknown>(guild: GuildResolvable): Queue<T> | undefined;
+     /**
+      * Deletes a queue and returns deleted queue object
+      * @param {GuildResolvable} guild The guild id to remove
