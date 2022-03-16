@@ -98,4 +98,5 @@ const config = {
 		eqeqeq: 1
 	}
 }
+
 module.exports = config
