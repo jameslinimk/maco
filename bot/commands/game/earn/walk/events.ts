@@ -99,7 +99,7 @@ const randomPeople = [
 	"John Cena",
 	"Zhong Xina",
 	"Will Smith",
-	"Jayden Smith",
+	"Jaden Smith",
 	"Eminem",
 	"Robert Downy Jr.",
 	"Justin Bieber",
@@ -183,20 +183,12 @@ const events: Event[] = [
 ]
 
 const randomEvent = () => {
+	const threshold = Math.random() * events.reduce((acc, cur) => acc += cur.weight, 0)
+
 	let total = 0
-	for (let i = 0; i < events.length; ++i)
-		total += events[i].weight
-
-
-	const threshold = Math.random() * total
-
-	total = 0
 	for (let i = 0; i < events.length - 1; ++i) {
 		total += events[i].weight
-
-		if (total >= threshold)
-			return events[i]
-
+		if (total >= threshold) return events[i]
 	}
 
 	return events[events.length - 1]
@@ -216,18 +208,16 @@ const parseEvent = (event: Event, user: GuildMember) => {
 	return { message, money }
 }
 
-/*
- * const test = () => {
- * 	const messages = {}
- * 	for (let i = 0; i < 100000; i++) {
- * 		const event = randomEvent()
- * 		if (!messages[event.messages[0]]) messages[event.messages[0]] = 0
- * 		messages[event.messages[0]] += 1
- * 	}
- * 	console.log(messages)
- * }
- * test()
- */
+// const test = () => {
+// 	const messages = {}
+// 	for (let i = 0; i < 100000; i++) {
+// 		const event = randomEvent()
+// 		if (!messages[event.messages[0]]) messages[event.messages[0]] = 0
+// 		messages[event.messages[0]] += 1
+// 	}
+// 	console.log(messages)
+// }
+// test()
 
 export {
 	events,

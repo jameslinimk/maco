@@ -81,7 +81,7 @@ const config = {
 			}
 		],
 
-		"multiline-comment-style": 1,
+		// "multiline-comment-style": 1,
 
 		"dot-notation": 1,
 

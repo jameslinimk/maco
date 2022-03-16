@@ -9,13 +9,11 @@ export default async (pages: (string | string[])[], interaction: CommandInteract
 					.setCustomId("setPage")
 					.setPlaceholder("Select a page")
 					.addOptions(
-						pages.map((_, i) => {
-							return {
-								label: `Page ${i + 1}`,
-								description: `Go to page ${i + 1}`,
-								value: `page${i}`
-							}
-						})
+						pages.map((_, i) => ({
+							label: `Page ${i + 1}`,
+							description: `Go to page ${i + 1}`,
+							value: `page${i}`
+						}))
 					)
 			),
 		new MessageActionRow()
@@ -134,15 +132,13 @@ export default async (pages: (string | string[])[], interaction: CommandInteract
 	})
 }
 
-const splitIntoChunks = <ArrayType>(array: ArrayType[], chunks: number) => {
-	return array.reduce<ArrayType[][]>((res, cur, i) => {
-		const chunkIndex = Math.floor(i / chunks)
-		if (!res[chunkIndex]) res[chunkIndex] = []
+const splitIntoChunks = <ArrayType>(array: ArrayType[], chunks: number) => array.reduce<ArrayType[][]>((res, cur, i) => {
+	const chunkIndex = Math.floor(i / chunks)
+	if (!res[chunkIndex]) res[chunkIndex] = []
 
-		res[chunkIndex].push(cur)
-		return res
-	}, [])
-}
+	res[chunkIndex].push(cur)
+	return res
+}, [])
 
 export {
 	splitIntoChunks

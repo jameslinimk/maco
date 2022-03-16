@@ -9,11 +9,6 @@ export default <Command>{
 		.setDefaultPermission(false),
 	permissions: [
 		{
-			id: "EVERYONE",
-			type: "ROLE",
-			permission: false
-		},
-		{
 			id: "400029130219061260",
 			type: "USER",
 			permission: true

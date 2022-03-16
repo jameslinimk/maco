@@ -13,7 +13,7 @@ export default async (interaction: CommandInteraction) => {
 	await interaction.deferReply()
 
 	const lyrics = await lyricsFinder(nowPlaying.title, nowPlaying.author)
-	if (!lyrics) return interaction.editReply(`\`⛔\` | No lyrics for **${nowPlaying.title}** by ${nowPlaying.author} was found!`)
+	if (!lyrics) return interaction.followUp({ content: `\`⛔\` | No lyrics for **${nowPlaying.title}** by ${nowPlaying.author} was found!`, ephemeral: true })
 
 	pages(lyrics.replaceAll("\n", "🎶").match(/.{1,4096}/g)!.map(v => v.replaceAll("🎶", "\n")), interaction, new MessageEmbed()
 		.setColor("BLURPLE")
