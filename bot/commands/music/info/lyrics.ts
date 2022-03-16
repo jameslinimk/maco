@@ -10,7 +10,7 @@ export default async (interaction: CommandInteraction) => {
 
 	if (!nowPlaying) return interaction.reply({ content: "`⛔` | There is no music currently playing, play some using `/music`!", ephemeral: true })
 
-	await interaction.deferReply({ ephemeral: true })
+	await interaction.deferReply()
 
 	const lyrics = await lyricsFinder(nowPlaying.title, nowPlaying.author)
 	if (!lyrics) return interaction.editReply(`\`⛔\` | No lyrics for **${nowPlaying.title}** by ${nowPlaying.author} was found!`)
